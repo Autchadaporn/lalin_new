@@ -1,8 +1,9 @@
-def grade(x):
-    if x == "A":
-        print ("4.00")
-    if x == "B+":
-       print ("3.50")
+def test(year,term): 
+    for i in range(1,year+1):
+        for p in range(1,term+1):
+            print(i,p)
 
-y="A"
-print(grade(y))
+(test(3,3))
+#นับในdatabaseว่ามีกี่ปี ใช้ max() ในsql
+#หาว่าแต่ละปีมีเทอม3ไหม 
+

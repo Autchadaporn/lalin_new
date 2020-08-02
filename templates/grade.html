@@ -13,24 +13,25 @@
     
     <table class="table table-bordered">
         <tr>
-            <th>แถว</th>
             <th>รหัสนิสิต</th>
             <th>รหัสวิชา</th>
+            <th>ชื่อวิชา</th>
+            <th>name subject</th>
             <th>เกรด</th>
+            <th>หน่วยกิต</th>
             <th>เทอม</th>
             <th>ปี</th>
-            <th>หน่วยกิต</th>
         </tr>
         {% for row in data1 %}
-        <tr>
-        
-            <td>{{row.student_grade_row_id}}</td>
+        <tr>        
             <td>{{row.student_id}}</td>
             <td>{{row.subject_id}}</td>
+            <td>{{row.subject_nameTh}}</td>
+            <td>{{row.subject_nameEng}}</td>
             <td>{{row.grade}}</td>
+            <td>{{row.unit}}</td>
             <td>{{row.term}}</td>
             <td>{{row.year}}</td>
-            <td>{{row.unit}}</td>
         </tr>
         {% endfor%}
     </table>
