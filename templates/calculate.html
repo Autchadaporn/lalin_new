@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>calculate</title>
+</head>
+<body>
+    <form action="/calculate" name="addsubject" id="addsubject" method="POST" >
+        <select name="subject_id">
+            {% for row in subject %}
+            <option value="{{row.subject_id}}">{{row.subject_id}} {{row.subject_nameTh}}</option>
+            {% endfor %}
+        </select>
+        <button id="addRow">เพิ่มวิชา</button>
+    
+
+    <table class="table table-bordered" id="myTbl">
+        <tr>
+            <th>รหัสวิชา</th>
+            <th>ชื่อวิชา</th>
+            <th>name subject</th>
+            <th>หน่วยกิต</th>
+            <th>เกรด</th>
+            <th>action</th>
+        </tr>
+        {% for row in showsubject %}
+        <tr id="">
+            <td size="8px "><input type="text" value="{{row.subject_id}}"   readonly></td>
+            <td><input type="text" value="{{row.subject_nameTh}}" readonly ></td>
+            <td><input type="text" value="{{row.subject_nameEng}}" readonly></td>
+            <td><input type="text" value="{{row.unit}}" size="5px " readonly></td>
+            <td><select>
+                <option>A</option>
+                <option>B+</option>
+                <option>B</option>
+                <option>C+</option>
+                <option>C</option>
+                <option>D+</option>
+                <option>D</option>
+                <option>F</option>
+                </select></td>
+            <td><div class="col"><button class="btn btn-danger" type="button" data-toggle="fieldset-remove-row" id=" ">-</button></div></td>
+        </tr>
+        {% endfor %}
+    </table>
+    </form>
+</body>
+<script>
+        // alert("hello")
+</script>
+</html>

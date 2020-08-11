@@ -20,7 +20,7 @@
     </h3>
     
     <p>
-    <input type="button" id="addRow" value="Add New Row" onclick="addRow()" />
+    <input type="button" id="addRow" value="Add New Subject" onclick="addRow()" />
     </p>
 
     <div id="cont"></div>  <!-- the container to add the TABLE -->
@@ -35,7 +35,7 @@
 
 <script>
     var arrHead = new Array();	// array for header.
-    arrHead = ['', 'Employee Name', 'Designation', 'Age'];
+    arrHead = ['', 'Subject Name', 'Unit', 'Grade'];
 
     // first create TABLE structure with the headers. 
     function createTable() {
@@ -72,6 +72,7 @@
                 // set input attributes.
                 button.setAttribute('type', 'button');
                 button.setAttribute('value', 'Remove');
+                
 
                 // add button's 'onclick' event.
                 button.setAttribute('onclick', 'removeRow(this)');
@@ -83,8 +84,22 @@
                 var ele = document.createElement('input');
                 ele.setAttribute('type', '');
                 ele.setAttribute('value', '');
-
+                console.log(ele);
                 td.appendChild(ele);
+
+                // select
+                function select(){
+                var x = document.createElement('SELECT');
+                x.setAttribute('id','mySelect');
+                document.body.appendChild(x);
+
+                var z = document.createElement("option");
+                z.setAttribute("value", "volvocar");
+                var t = document.createTextNode("Volvo");
+                z.appendChild(t);
+                document.getElementById("mySelect").appendChild(z);
+              }
+
             }
         }
     }

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>แผนการเรียน</title>
+</head>
+<body>
+    <div align="center">
+        <h1>แผนการเรียน</h1>
+        ปี  1 เทอม 1
+        <table class="table table-bordered">
+            <tr>
+                <th>รหัสวิชา</th>
+                <th>ชื่อวิชา</th>
+                <th>name subject</th>
+                <!-- <th>ปี</th>
+                <th>เทอม</th> -->
+            </tr>
+            {% for row in data1 %}
+            <tr>
+                <td>{{row.subject_id}}</td>
+                <td>{{row.subject_nameTh}}</td>
+                <td>{{row.subject_nameEng}}</td>
+                <!-- <td>{{row.year}}</td>
+                <td>{{row.term}}</td> -->
+            </tr>
+            {% endfor %}
+        </table>
+
+            ปี  1 เทอม 2
+            <table class="table table-bordered">
+                <tr>
+                    <th>รหัสวิชา</th>
+                    <th>ชื่อวิชา</th>
+                    <th>name subject</th>
+                    <!-- <th>ปี</th>
+                    <th>เทอม</th> -->
+                </tr>
+                {% for row in data2 %}
+                <tr>
+                    <td>{{row.subject_id}}</td>
+                    <td>{{row.subject_nameTh}}</td>
+                    <td>{{row.subject_nameEng}}</td>
+                    <!-- <td>{{row.year}}</td>
+                    <td>{{row.term}}</td> -->
+                </tr>
+                {% endfor %}
+            </table>
+ 
+            ปี  2 เทอม 1
+            <table class="table table-bordered">
+                <tr>
+                    <th>รหัสวิชา</th>
+                    <th>ชื่อวิชา</th>
+                    <th>name subject</th>
+                    <!-- <th>ปี</th>
+                    <th>เทอม</th> -->
+                </tr>
+                {% for row in data3 %}
+                <tr>
+                    <td>{{row.subject_id}}</td>
+                    <td>{{row.subject_nameTh}}</td>
+                    <td>{{row.subject_nameEng}}</td>
+                    <!-- <td>{{row.year}}</td>
+                    <td>{{row.term}}</td> -->
+                </tr>
+                {% endfor %}
+            </table>
+
+            ปี  2 เทอม 2
+            <table class="table table-bordered">
+                <tr>
+                    <th>รหัสวิชา</th>
+                    <th>ชื่อวิชา</th>
+                    <th>name subject</th>
+                    <!-- <th>ปี</th>
+                    <th>เทอม</th> -->
+                </tr>
+                {% for row in data4 %}
+                <tr>
+                    <td>{{row.subject_id}}</td>
+                    <td>{{row.subject_nameTh}}</td>
+                    <td>{{row.subject_nameEng}}</td>
+                    <!-- <td>{{row.year}}</td>
+                    <td>{{row.term}}</td> -->
+                </tr>
+                {% endfor %}
+            </table>
+
+            ปี  3 เทอม 1
+            <table class="table table-bordered">
+                <tr>
+                    <th>รหัสวิชา</th>
+                    <th>ชื่อวิชา</th>
+                    <th>name subject</th>
+                    <!-- <th>ปี</th>
+                    <th>เทอม</th> -->
+                </tr>
+                {% for row in data5 %}
+                <tr>
+                    <td>{{row.subject_id}}</td>
+                    <td>{{row.subject_nameTh}}</td>
+                    <td>{{row.subject_nameEng}}</td>
+                    <!-- <td>{{row.year}}</td>
+                    <td>{{row.term}}</td> -->
+                </tr>
+                {% endfor %}
+            </table>
+
+            ปี  3 เทอม 2
+            <table class="table table-bordered">
+                <tr>
+                    <th>รหัสวิชา</th>
+                    <th>ชื่อวิชา</th>
+                    <th>name subject</th>
+                    <!-- <th>ปี</th>
+                    <th>เทอม</th> -->
+                </tr>
+                {% for row in data6 %}
+                <tr>
+                    <td>{{row.subject_id}}</td>
+                    <td>{{row.subject_nameTh}}</td>
+                    <td>{{row.subject_nameEng}}</td>
+                    <!-- <td>{{row.year}}</td>
+                    <td>{{row.term}}</td> -->
+                </tr>
+                {% endfor %}
+            </table>
+
+            ปี  4 เทอม 1
+            <table class="table table-bordered">
+                <tr>
+                    <th>รหัสวิชา</th>
+                    <th>ชื่อวิชา</th>
+                    <th>name subject</th>
+                    <!-- <th>ปี</th>
+                    <th>เทอม</th> -->
+                </tr>
+                {% for row in data7 %}
+                <tr>
+                    <td>{{row.subject_id}}</td>
+                    <td>{{row.subject_nameTh}}</td>
+                    <td>{{row.subject_nameEng}}</td>
+                    <!-- <td>{{row.year}}</td>
+                    <td>{{row.term}}</td> -->
+                </tr>
+                {% endfor %}
+            </table>
+
+            ปี  4 เทอม 2
+            <table class="table table-bordered">
+                <tr>
+                    <th>รหัสวิชา</th>
+                    <th>ชื่อวิชา</th>
+                    <th>name subject</th>
+                    <!-- <th>ปี</th>
+                    <th>เทอม</th> -->
+                </tr>
+                {% for row in data8 %}
+                <tr>
+                    <td>{{row.subject_id}}</td>
+                    <td>{{row.subject_nameTh}}</td>
+                    <td>{{row.subject_nameEng}}</td>
+                    <!-- <td>{{row.year}}</td>
+                    <td>{{row.term}}</td> -->
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+</body>
+</html>
