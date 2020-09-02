@@ -20,7 +20,7 @@ mysql = MySQL(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('hello.html')
 
 @app.route('/subject')
 def student():
