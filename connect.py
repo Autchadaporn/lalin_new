@@ -4,9 +4,9 @@ from sqlalchemy import text
 from function import * #เรียกใช้ function จากไฟล์ function.py 
 import bcrypt
 
-from flask_wtf import FlaskForm
-from wtforms import StringField, FieldList, FormField, SubmitField
-from wtforms.validators import DataRequired 
+# from flask_wtf import FlaskForm
+# from wtforms import StringField, FieldList, FormField, SubmitField
+# from wtforms.validators import DataRequired 
 
 # Start connect DB
 app = Flask(__name__)
@@ -20,7 +20,7 @@ mysql = MySQL(app)
 
 @app.route('/')
 def index():
-    return render_template('hello.html')
+    return render_template('index.html')
 
 @app.route('/subject')
 def student():
