@@ -4,7 +4,7 @@ from sqlalchemy import text
 from function import * #เรียกใช้ function จากไฟล์ function.py 
 import bcrypt
 
-from flask_wtf import FlaskForm
+# from flask_wtf import FlaskForm
 from wtforms import StringField, FieldList, FormField, SubmitField
 from wtforms.validators import DataRequired 
 
