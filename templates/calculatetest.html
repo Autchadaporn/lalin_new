@@ -1,60 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamically Add Remove Table Rows in JavaScript</title>
+    <style>
+    	* { font: 17px Calibri; } 
+        table { width: 70%; }
+        table, th, td { border: solid 1px #DDD;
+            border-collapse: collapse; padding: 2px 3px; text-align: center;
+        }
+    </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <title>calculate</title>
 </head>
-<body>
-    <form action="/calculate" name="addsubject" id="addsubject" method="POST" >
-        <select name="subject_id">
-            {% for row in subject %}
-            <option value="{{row.subject_id}}">{{row.subject_id}} {{row.subject_nameTh}}</option>
-            {% endfor %}
-        </select>
-        <button id="addRow" onclick="addRow()">เพิ่มวิชา</button>
-    <div id="cont">
-    <table class="table table-bordered" >
-        <tr>
-            <th>รหัสวิชา</th>
-            <th>ชื่อวิชา</th>
-            <th>name subject</th>
-            <th>หน่วยกิต</th>
-            <th>เกรด</th>
-            <th>action</th>
-        </tr>
-        {% for row in showsubject %}
-        <tr id="">
-            <td size="8px "><input type="text" value="{{row.subject_id}}" id="subject_id"  readonly></td>
-            <td><input type="text" value="{{row.subject_nameTh}}" readonly ></td>
-            <td><input type="text" value="{{row.subject_nameEng}}" readonly></td>
-            <td><input type="text" value="{{row.unit}}" size="5px " readonly></td>
-            <td><select name="grade">
-                <option value="A">A</option>
-                <option value="B+">B+</option>
-                <option value="B">B</option>
-                <option value="C+">C+</option>
-                <option value="C">C</option>
-                <option value="D+">D+</option>
-                <option value="D">D</option>
-                <option value="F">F</option>
-                <option value="W">W</option>
-                </select></td>
-            <td><div class="col"><button class="btn btn-danger" type="button" data-toggle="fieldset-remove-row" id=" ">-</button></div></td>
-        </tr>
-        {% endfor %}
-    </table>
-    </div>
-    </form>
+<body onload="createTable()">
+
+    <h4>เลือกวิชามาคำนวณเกรด</h4>    
+    <p>
+    <input type="button" id="addRow" value="Add New Subject" onclick="addRow()" />
+    </p>
+
+    <div id="cont"></div>  <!-- the container to add the TABLE -->
+
+    <p>
+    <input type="button" id="bt" value="Submit Data" onclick="submit()" />
+    </p>
+    
+
+    <p id='output'></p>
 </body>
 
 <script>
-        
     var arrHead = new Array();	// array for header.
-    arrHead = ['', 'Subject Name', 'Unit', 'Grade'];
+    arrHead = ['Delete', 'Subject_id','วิชา','Subject Name', 'Unit', 'Grade'];
 
     // first create TABLE structure with the headers. 
     function createTable() {
@@ -98,13 +76,44 @@
 
                 td.appendChild(button);
             }
+            if (c > 0 && c <5){
+                var ele = document.createElement('input');
+                ele.setAttribute('type', '');
+                ele.setAttribute('value', '2');
+                console.log(ele);
+                td.appendChild(ele);
+            }
+            if (c == 5){
+
+            // select
+            //    
+                var myParent = document.body;
+
+                //Create array of options to be added
+                var array = ["A","B+","B","C+","C","D+","D","F","W"];
+
+                //Create and append select list
+                var selectList = document.createElement("select");
+                selectList.id = "mySelect";
+                td.appendChild(selectList);
+
+                //Create and append the options
+                for (var i = 0; i < array.length; i++) {
+                    var option = document.createElement("option");
+                    option.value = array[i];
+                    option.text = array[i];
+                    selectList.appendChild(option);
+                }
+            
+            }
             else {
                 // 2nd, 3rd and 4th column, will have textbox.
                 var ele = document.createElement('input');
                 ele.setAttribute('type', '');
-                ele.setAttribute('value', '{{unit}}');
-                console.log(ele);
-                td.appendChild(ele);
+                ele.setAttribute('value', '');
+            
+            //     console.log(ele);
+            //     td.appendChild(ele);
                 
             }
         }
@@ -137,6 +146,4 @@
         //console.log (arrValues);   // you can see the array values in your browsers console window. Thanks :-) 
     }
 </script>
-
-
 </html>

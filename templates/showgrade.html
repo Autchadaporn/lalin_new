@@ -9,11 +9,29 @@
     <title>grade</title>
 </head>
 <body>
-    <body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">LaLin</a>
+          </div>
+          <ul class="nav navbar-nav">
+            <!-- <li class="active"><a href="#">Home</a></li> -->
+            <li><a href="/calendar">ปฏิทินการศึกษา</a></li>
+            <li><a href="/showstudyplan">แผนการเรียน</a></li>
+            <li><a href="/gradeall">เกรด</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          </ul>
+        </div>
+    </nav>
+    <div class="container">
         <div align="center">
+            <p>เกรดต่อเทอม</p>
         <table class="table table-bordered">
             <tr>
-                <th>รหัสนิสิต</th>
+                <th style="width:100px;">รหัสนิสิต</th>
                 <th>รหัสวิชา</th>
                 <th>ชื่อวิชา</th>
                 <th>name subject</th>
@@ -37,5 +55,6 @@
         </table>
         <input type="text" value="{{GPA}}" size="5">
         </div>
+    </div>
 </body>
 </html>

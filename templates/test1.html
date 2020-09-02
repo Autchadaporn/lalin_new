@@ -14,28 +14,30 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body onload="createTable()">
-
-    <h3>
-        Click the "Add New Row" button to add a new row to the table. <br> Enter values in each row and press the "Submit Data" button.
-    </h3>
-    
-    <p>
-    <input type="button" id="addRow" value="Add New Subject" onclick="addRow()" />
-    </p>
-
-    <div id="cont"></div>  <!-- the container to add the TABLE -->
-
-    <p>
-    <input type="button" id="bt" value="Submit Data" onclick="submit()" />
-    </p>
-    
-
-    <p id='output'></p>
+    <div class="container">
+        <div align="center">
+            <h3>เลือกวิชามาคำนวนเกรด</h3>
+            <select name="subject_id" id="subject_id">
+                {% for row in subject %}
+                <option id="sub_" value="{{row.subject_id}}">{{row.subject_id}} {{row.subject_nameTh}}
+                <!-- <p id="sub_nameth" hidden>{{row.subject_nameTh}}</p> -->
+                <!-- <h1 hidden id="sub_nameth">{{row.subject_nameTh}} </h1> -->
+                </option>
+                <!-- <input type="hidden" id="sub_nameth" value="{{row.subject_nameTh}}" > -->
+                {% endfor %}
+            </select>
+            <input type="button" id="addRow" value="Add New Subject" onclick="addRow()" />
+            <div id="cont"></div>  <!-- the container to add the TABLE -->
+            <input type="button" id="bt" value="Submit Data" onclick="submit()" />
+            <p id='output'></p>
+            <p id='cal'></p>
+        </div>
+    </div>
 </body>
 
 <script>
     var arrHead = new Array();	// array for header.
-    arrHead = ['', 'Subject Name', 'Unit', 'Grade'];
+    arrHead = ['Delete', 'Subject_id','วิชา','Subject Name', 'Unit', 'Grade'];
 
     // first create TABLE structure with the headers. 
     function createTable() {
@@ -56,7 +58,12 @@
     // now, add a new to the TABLE.
     function addRow() {
         var empTab = document.getElementById('empTable');
-
+        var name = document.getElementById("subject_id");
+        var i = name.selectedIndex;
+        var sub_name = name.options[i].value;
+        var sub_nameth = document.getElementById('sub_nameth');
+        console.log('อันนี้',typeof sub_name);
+        console.log('=',sub_nameth);
         var rowCnt = empTab.rows.length;   // table row count.
         var tr = empTab.insertRow(rowCnt); // the table row.
         tr = empTab.insertRow(rowCnt);
@@ -79,26 +86,103 @@
 
                 td.appendChild(button);
             }
-            else {
-                // 2nd, 3rd and 4th column, will have textbox.
+            // subject_id
+            if (c == 1){
+                var ele = document.createElement('input');
+                ele.setAttribute('type', '');
+                ele.setAttribute('value', sub_name);
+                console.log(ele);
+                td.appendChild(ele);
+            }
+            // วิชา
+            if (c == 2){
                 var ele = document.createElement('input');
                 ele.setAttribute('type', '');
                 ele.setAttribute('value', '');
                 console.log(ele);
                 td.appendChild(ele);
+            }
+            // subject_name
+            if (c == 3){
+                var ele = document.createElement('input');
+                ele.setAttribute('type', '');
+                ele.setAttribute('value', '');
+                console.log(ele);
+                td.appendChild(ele);
+            }
+            //  Unit
+            if (c == 4){
+                var ele = document.createElement('input');
+                ele.setAttribute('type', 'unit');
+                ele.setAttribute('value', '3');
+                console.log(ele);
+                td.appendChild(ele);
+            }
+            if (c == 5){
 
-                // select
-                function select(){
-                var x = document.createElement('SELECT');
-                x.setAttribute('id','mySelect');
-                document.body.appendChild(x);
+            // select
+            //    
+                var sel = document.createElement("select");
+                sel.setAttribute('type','grade');
+                var opt1 = document.createElement("option");
+                var opt2 = document.createElement("option");
+                var opt3 = document.createElement("option");
+                var opt4 = document.createElement("option");
+                var opt5 = document.createElement("option");
+                var opt6 = document.createElement("option");
+                var opt7 = document.createElement("option");
+                var opt8 = document.createElement("option");
+                // var opt9 = document.createElement("option");
 
-                var z = document.createElement("option");
-                z.setAttribute("value", "volvocar");
-                var t = document.createTextNode("Volvo");
-                z.appendChild(t);
-                document.getElementById("mySelect").appendChild(z);
-              }
+                opt1.value = "4.00";
+                opt1.text = "A";
+
+                opt2.value = "3.50";
+                opt2.text = "B+";
+
+                opt3.value = "3.00";
+                opt3.text = "B";
+
+                opt4.value = "2.50";
+                opt4.text = "C+";
+
+                opt5.value = "2.00";
+                opt5.text = "C";
+
+                opt6.value = "1.50";
+                opt6.text = "D+";
+                
+                opt7.value = "1.00";
+                opt7.text = "D";
+
+                opt8.value = "0.00";
+                opt8.text = "F";
+
+                // opt9.value = "W";
+                // opt9.text = "W";
+
+                sel.add(opt1, null);
+                sel.add(opt2, null);
+                sel.add(opt3, null);
+                sel.add(opt4, null);
+                sel.add(opt5, null);
+                sel.add(opt6, null);
+                sel.add(opt7, null);
+                sel.add(opt8, null);
+                // sel.add(opt9, null);
+
+
+                td.appendChild(sel);
+            
+            }
+            else {
+                // 2nd, 3rd and 4th column, will have textbox.
+                var ele = document.createElement('input');
+                ele.setAttribute('type', '');
+                ele.setAttribute('value', '');
+                // console.log(ele);
+                // td.appendChild(ele);
+         
 
             }
         }
@@ -110,6 +194,8 @@
         empTab.deleteRow(oButton.parentNode.parentNode.rowIndex); // button -> td -> tr.
     }
 
+    
+
     // function to extract and submit table data.
     function submit() {
         var myTab = document.getElementById('empTable');
@@ -120,7 +206,10 @@
         	// loop through each cell in a row.
             for (c = 0; c < myTab.rows[row].cells.length; c++) {  
                 var element = myTab.rows.item(row).cells[c];
-                if (element.childNodes[0].getAttribute('type') == 'text') {
+                if (element.childNodes[0].getAttribute('type') == 'unit') {
+                    arrValues.push("'" + element.childNodes[0].value + "'");
+                }
+                if (element.childNodes[0].getAttribute('type') == 'grade') {
                     arrValues.push("'" + element.childNodes[0].value + "'");
                 }
             }
@@ -128,7 +217,12 @@
         
         // The final output.
         document.getElementById('output').innerHTML = arrValues;
-        //console.log (arrValues);   // you can see the array values in your browsers console window. Thanks :-) 
+        console.log (arrValues);   // you can see the array values in your browsers console window. Thanks :-) 
+        let result = [];
+        for (i=0;i<arrValues.length;i++){
+            console.log (arrValues[i]); 
+        }
     }
+
 </script>
 </html>

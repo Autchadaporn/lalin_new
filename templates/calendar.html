@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ url_for ('static', filename='css/styleGrade.css') }}" >
-    <title>grade</title>
+    <title>ปฎิทินการศึกษา</title>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-static-top">
@@ -33,37 +34,28 @@
             </div>
         </div>
     </div>
-    <div>
-        <div class="container">
-            <div align="center">
-                <p>เกรดเฉลี่ยทั้งหมด</p>
-                <p><input type="text" value="{{GPAX}}" size="5" readonly></p>
-                <table class="table table-bordered">
-                    <tr>
-                        <th>รหัสนิสิต</th>
-                        <th>รหัสวิชา</th>
-                        <th>ชื่อวิชา</th>
-                        <th>name subject</th>
-                        <th>เกรด</th>
-                        <th>หน่วยกิต</th>
-                        <th>เทอม</th>
-                        <th>ปี</th>
-                    </tr>
-                    {% for row in data1 %}
-                    <tr>        
-                        <td>{{row.student_id}}</td>
-                        <td>{{row.subject_id}}</td>
-                        <td>{{row.subject_nameTh}}</td>
-                        <td>{{row.subject_nameEng}}</td>
-                        <td>{{row.grade}}</td>
-                        <td>{{row.unit}}</td>
-                        <td>{{row.term}}</td>
-                        <td>{{row.year}}</td>
-                    </tr>
-                    {% endfor%}
-                </table>
-            </div>
+    <div class="container">
+        <div align="center">
+            <p>ปฎิทินการศึกษาปีการศึกษา</p>
+        <table class="table table-bordered">
+            <tr>
+                <th>กิจกรรม</th>
+                <th>ภาคเรียน</th>
+                <th>วันเริ่ม</th>
+                <th>วันสิ้นสุด</th>
+                <th>ปีการศึกษา</th>
+            </tr>
+            {% for row in data %}
+            <tr>        
+                <td>{{row.topic_name}}</td>
+                <td>{{row.term}}</td>
+                <td>{{row.date_start}}</td>
+                <td>{{row.date_stop}}</td>
+                <td>{{row.year}}</td>
+            </tr>
+            {% endfor%}
+        </table>
         </div>
-    </div>
+        </div>
 </body>
 </html>

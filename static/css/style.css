@@ -1,0 +1,31 @@
+img {
+  vertical-align: middle;
+  border-style: none;
+}
+input{
+  border-radius: 8px;
+  line-height: 1.2;
+  color: #333333;
+  margin-top: 0.5em;
+  background: #fff;
+  height: 30px;
+  padding: 0 3px 0 23px;  
+}
+
+body{
+  background-color: #FFEDB9;
+}
+.responsive{
+  width: 50%;
+  height: auto;
+}
+#home{
+  padding:1em;
+  background-color: rgb(250, 248, 248);
+  border-radius: 8px;
+}
+.container {
+  max-width: 940px;
+  margin-right: auto;
+  margin-left: auto;
+}
