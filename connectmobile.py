@@ -17,11 +17,7 @@ app = Flask(__name__)
 # app.config['MYSQL_DB']='lalin_new'
 # app.config['MYSQL_CURSORCLASS']='DictCursor'
 
-app.config['MYSQL_USER']='b1c419bc05a2f4'
-app.config['MYSQL_PASSWORD']='4923446e'
-app.config['MYSQL_HOST']='us-cdbr-east-02.cleardb.com'
-app.config['MYSQL_DB']='heroku_afb54efb4938d74'
-app.config['MYSQL_CURSORCLASS']='DictCursor'
+
 
 
 mysql = MySQL(app)
