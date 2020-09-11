@@ -27,6 +27,9 @@ body {
   margin-right: auto;
   margin-left: auto;
 }
+p {
+  margin-top: 20px;
+}
 
 @media screen and (max-width: 537px) {
   body {

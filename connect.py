@@ -32,7 +32,7 @@ def student():
 @app.route('/gradeall')
 def gradeall():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.term , student_grade.year FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '60020671' ") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
+    cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '60020671' ") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
     data1=cur.fetchall()
     
     #------------------------------ start คำนวนเกรด gpax---------------------------------#
@@ -129,14 +129,122 @@ def showgrade():
     # return render_template('showgrade.html',data=data)
 
 #-----------------เลือกเกรดมาแสดง--------------------------------------
-@app.route('/calculate')
-def calculate():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM subject")
-    subject = cur.fetchall()
-    return render_template('test1.html',subject=subject)
+# @app.route('/calculate')
+# def calculate():
+#     cur = mysql.connection.cursor()
+#     cur.execute("SELECT * FROM subject")
+#     subject = cur.fetchall()
+#     return render_template('test1.html',subject=subject)
+
+@app.route('/selectcal')
+def selectcal():
+    return render_template('selectcal.html')
+
+@app.route('/calculatetest',methods=['GET','POST'])
+def calculatetest():
+    year=""
+    term=""
+    subject=""
+    if request.method == 'POST':
+        year =request.form['year']
+        term =request.form['term']
+        # print(year,term)
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT study_plan.study_plan_row_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng, subject.unit FROM subject JOIN study_plan ON subject.subject_id = study_plan.subject_id WHERE study_plan.plan_id = '60' and study_plan.year ='"+year+"' and study_plan.term='"+term+"' ")
+        subject = cur.fetchall()
+    headers = ('year','term')
+    values = (
+        year,
+        term,       
+    )
+    items = [{} for i in range(len(values[0]))]
+    for x,i in enumerate(values):  #enumerate เป็นคำสั่งสำหรับแจกแจงค่า index และข้อมูลใน index ในรูปแบบทูเพิล (Tuple) ดังนี้ (Index,Value) โดยต้องใช้กับข้อมูลชนิด list
+        for _x,_i in enumerate(i): 
+            items[_x][headers[x]] = _i
+    result = jsonify(items)
+    #print("---------------------------------------------------")
+    # print(result)
+    # print(items)
+    # rows = json.dumps(items)
+    rows=items
+    # print(rows)
+
+    return render_template('calculate.html',subject=subject,year=rows)
+
+@app.route('/calgrade', methods=['GET', 'POST'])#นำเกรดที่ user submit มาคำนวณ และส่งค่าของเกรดกลับไปด้วย
+def calgrade():
+    if request.method == 'POST':
+        subject_id = request.form.getlist("subject_id[]")
+        subject_nameTh = request.form.getlist("subject_nameTh[]")
+        subject_nameEng = request.form.getlist("subject_nameEng[]") #รับค่าเป็น list จากform index.html
+        unit = request.form.getlist("unit[]")
+        grade = request.form.getlist("grade[]")
+        print(subject_id)
+        # ---------------------- start  ส่งค่าแล้วprintออกมาเป็นjson -------------------------
+    headers = ('subject_id','subject_nameTh','subject_nameEng', 'unit', 'grade')
+    values = (
+        request.form.getlist("subject_id[]"),
+        request.form.getlist('subject_nameTh[]'), 
+        request.form.getlist("subject_nameEng[]") ,
+        request.form.getlist('unit[]'),  
+        request.form.getlist('grade[]'),         
+    )
+    items = [{} for i in range(len(values[0]))]
+    for x,i in enumerate(values):  #enumerate เป็นคำสั่งสำหรับแจกแจงค่า index และข้อมูลใน index ในรูปแบบทูเพิล (Tuple) ดังนี้ (Index,Value) โดยต้องใช้กับข้อมูลชนิด list
+        for _x,_i in enumerate(i): 
+            items[_x][headers[x]] = _i
+    result = jsonify(items)
+    #print("---------------------------------------------------")
+    # print(result)
+    # print(items)
     
- 
+    # rows = json.dumps(items)
+    rows=items
+    # print(rows)
+    #print("---------------------------------------------------")
+    # -------------------- stop  ส่งค่าแล้วprintออกมาเป็นjson-----------------------
+    # ----------------------นำเกรดมาคำนวณ----------------------
+    for i in range(len(grade)): #วนลูปเช็คว่ามี W ไหม
+        # print(Grade[i])
+        if grade[i] == 'W':
+            grade[i] = 0
+            for x in range(len(unit)): #วนหาหน่วยกิตที่ติด W
+                if x == i:
+                    unit[x] = 0 #เปลี่ยนหน่วตกิตวิชาที่ติด W ให้มีค่าเป็น 0
+                    
+        else :
+             print(grade[i]) #เกรดที่นำมาคิด
+
+    #------------------------- start หาค่าผลรวมของหน่วยกิต ---------------------------
+    sum =0
+    for x in range(len(unit)):
+        #print(float(Unit[x])) #หน่วยกิตแต่ละตัว อ้างจาก x คือ index
+        sum = sum + (float(unit[x]))
+    print('ผลรวมหน่วยกิต =',sum)
+    #--------------------------- Stop หาค่าผลรวมของหน่วยกิต -------------------------
+    # print("***********************************************************************")
+    total =0 
+    for x in range(len(unit)):
+        for i in range(len(grade)):
+            if i == x: #ถ้า index ของ Unit และ Grade เท่ากัน ให้นำมาคำนวณ
+                sum1 = (float(unit[x])* (tranformgrade(grade[i]))) # หน่วยกิต คูณ เกรด
+                # print(sum1)
+                total = total+sum1 # เช่น (3*4.0)+(3*3.5)
+    print('ผลรวม หน่วยกิต*เกรด =',total)
+    # print("***********************************************************************")
+    GPA = total / sum
+    print(GPA)
+    x= str(GPA)
+    itemGPA = ""
+    for i in range(0,4):
+        itemGPA = itemGPA + x[i]
+    print(itemGPA)
+    # return render_template('calculateshow.html',subject=rows,GPA=itemGPA)
+    return render_template('calculate.html',subject=rows,GPA=itemGPA)
+    
+
+
+     
 #-------------------แสดงแผนการเรียนทั้งหมด------------------------
 @app.route('/showstudyplan')
 def showstudyplan():
@@ -175,7 +283,7 @@ def searchplan():
 @app.route("/calendar")
 def  calendar():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT topic.topic_name, calendar.term ,calendar.date_start, calendar.date_stop,calendar.year FROM topic INNER JOIN calendar ON topic.topic_id = calendar.topic_id ")
+    cur.execute("SELECT topic.topic_name, calendar.term ,calendar.date_start, calendar.date_stop,calendar.year FROM topic INNER JOIN calendar ON topic.topic_id = calendar.topic_id ORDER BY calendar.term")
     data = cur.fetchall()
     return render_template('calendar.html',data=data)
     

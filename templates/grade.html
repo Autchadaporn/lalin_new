@@ -26,7 +26,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">เกรด</a>
                         <ul class="dropdown-menu">
                             <li><a href="/gradeall">ผลการเรียน</a></li>
-                            <li><a href="/calculate">คำนวณเกรด</a></li>
+                            <li><a href="/selectcal">คำนวณเกรด</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -46,8 +46,8 @@
                         <th>name subject</th>
                         <th>เกรด</th>
                         <th>หน่วยกิต</th>
-                        <th>เทอม</th>
                         <th>ปี</th>
+                        <th>เทอม</th>
                     </tr>
                     {% for row in data1 %}
                     <tr>        
@@ -57,8 +57,8 @@
                         <td>{{row.subject_nameEng}}</td>
                         <td>{{row.grade}}</td>
                         <td>{{row.unit}}</td>
-                        <td>{{row.term}}</td>
                         <td>{{row.year}}</td>
+                        <td>{{row.term}}</td>
                     </tr>
                     {% endfor%}
                 </table>
