@@ -69,6 +69,7 @@ def gradeall():
     #---- start แสดงทศนิยม2ตำแหน่ง---------#
     x = str(GPAX)
     # print(type(x))
+    
     itemGPAX = ""
     for i in range(0,4):
         itemGPAX = itemGPAX + x[i]
@@ -240,8 +241,9 @@ def calgrade():
     print('ผลรวม หน่วยกิต*เกรด =',total)
     # print("***********************************************************************")
     GPA = total / sum
-    print(GPA)
+    GPA = '%.5f'%(GPA)
     x= str(GPA)
+    print(x)
     itemGPA = ""
     for i in range(0,4):
         itemGPA = itemGPA + x[i]
