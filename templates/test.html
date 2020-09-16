@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script >
+    $(document).ready(function(){
+        // liff.init(function (data) {
+            // $("#token_1").val(data.context.userId);
+            // $("#token_1").val(123456);
+            var teamData = "Ud0c7fe8f06589b9b9d075a88188318cf";
+            console.log(teamData)
+            $.ajax({
+                    url: "/gradeall",
+                    type: "GET",
+                    data: {'result':teamData}
+            });
+        // });
+    });
+</script>

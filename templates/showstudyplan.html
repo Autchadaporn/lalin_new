@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="{{ url_for ('static', filename='css/styleGrade.css') }}" >
+    <link rel="stylesheet" href="{{ url_for ('static', filename='css/stylePlan.css') }}" >
     <title>แผนการเรียน</title>
 </head>
 <body>
@@ -40,213 +40,234 @@
         <form action="/searchplan" method="POST">
         <div align="center">
             <h4>แผนการเรียน</h4>
-            <div>
-                ค้นหาแผนการเรียน            
-                ปี:<select  name="year">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
-                เทอม: <select name="term">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                </select>
-                <input type="submit">
+            
+            <div class="selectsearch">
+                <table>
+                    <th>ค้นหาแผนการเรียน</th>        
+                    <th>ปี:<select  name="year">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </th>
+                    <th>เทอม: <select name="term">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                    </select>
+                    </th>
+                    <th><input type="submit" value="ค้นหา"></th>
+                </table>
             </div>
             
-            <hr>
-            ปี  1 เทอม 1
-            <table class="table table-bordered" >
-            <thead>
-                <tr>
-                    <th style="width:100px">รหัสวิชา</th>
-                    <th style="width:500px">ชื่อวิชา</th>
-                    <th style="width:500px">name subject</th>
-                    <!-- <th>ปี</th>
-                    <th>เทอม</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data1 %}
-                <tr>
-                    <td>{{row.subject_id}}</td>
-                    <td>{{row.subject_nameTh}}</td>
-                    <td>{{row.subject_nameEng}}</td>
-                    <!-- <td>{{row.year}}</td>
-                    <td>{{row.term}}</td> -->
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
+            
+            <div class="paddingtable">
+                ปี  1 เทอม 1
+                <table class="table table-dark" >
+                <thead>
+                    <tr>
+                        <th style="width:100px">รหัสวิชา</th>
+                        <th style="width:500px">ชื่อวิชา</th>
+                        <th style="width:500px">name subject</th>
+                        <!-- <th>ปี</th>
+                        <th>เทอม</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data1 %}
+                    <tr>
+                        <td>{{row.subject_id}}</td>
+                        <td>{{row.subject_nameTh}}</td>
+                        <td>{{row.subject_nameEng}}</td>
+                        <!-- <td>{{row.year}}</td>
+                        <td>{{row.term}}</td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
 
-            ปี  1 เทอม 2
-            <table class="table table-bordered" >
-            <thead>
-                <tr>
-                    <th style="width:100px">รหัสวิชา</th>
-                    <th style="width:500px">ชื่อวิชา</th>
-                    <th style="width:500px">name subject</th>
-                    <!-- <th>ปี</th>
-                    <th>เทอม</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data2 %}
-                <tr>
-                    <td>{{row.subject_id}}</td>
-                    <td>{{row.subject_nameTh}}</td>
-                    <td>{{row.subject_nameEng}}</td>
-                    <!-- <td>{{row.year}}</td>
-                    <td>{{row.term}}</td> -->
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
-    
-            ปี  2 เทอม 1
-            <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th style="width:100px">รหัสวิชา</th>
-                    <th style="width:500px">ชื่อวิชา</th>
-                    <th style="width:500px">name subject</th>
-                    <!-- <th>ปี</th>
-                    <th>เทอม</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data3 %}
-                <tr>
-                    <td>{{row.subject_id}}</td>
-                    <td>{{row.subject_nameTh}}</td>
-                    <td>{{row.subject_nameEng}}</td>
-                    <!-- <td>{{row.year}}</td>
-                    <td>{{row.term}}</td> -->
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
+            <div class="paddingtable">
+                ปี  1 เทอม 2
+                <table class="table table-dark" >
+                <thead>
+                    <tr>
+                        <th style="width:100px">รหัสวิชา</th>
+                        <th style="width:500px">ชื่อวิชา</th>
+                        <th style="width:500px">name subject</th>
+                        <!-- <th>ปี</th>
+                        <th>เทอม</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data2 %}
+                    <tr>
+                        <td>{{row.subject_id}}</td>
+                        <td>{{row.subject_nameTh}}</td>
+                        <td>{{row.subject_nameEng}}</td>
+                        <!-- <td>{{row.year}}</td>
+                        <td>{{row.term}}</td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+            
+            <div class="paddingtable">
+                ปี  2 เทอม 1
+                <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th style="width:100px">รหัสวิชา</th>
+                        <th style="width:500px">ชื่อวิชา</th>
+                        <th style="width:500px">name subject</th>
+                        <!-- <th>ปี</th>
+                        <th>เทอม</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data3 %}
+                    <tr>
+                        <td>{{row.subject_id}}</td>
+                        <td>{{row.subject_nameTh}}</td>
+                        <td>{{row.subject_nameEng}}</td>
+                        <!-- <td>{{row.year}}</td>
+                        <td>{{row.term}}</td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
 
-            ปี  2 เทอม 2
-            <table class="table table-bordered">
-            <thead >
-                <tr>
-                    <th style="width:100px">รหัสวิชา</th>
-                    <th style="width:500px">ชื่อวิชา</th>
-                    <th style="width:500px">name subject</th>
-                    <!-- <th>ปี</th>
-                    <th>เทอม</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data4 %}
-                <tr>
-                    <td>{{row.subject_id}}</td>
-                    <td>{{row.subject_nameTh}}</td>
-                    <td>{{row.subject_nameEng}}</td>
-                    <!-- <td>{{row.year}}</td>
-                    <td>{{row.term}}</td> -->
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
+            <div class="paddingtable">
+                ปี  2 เทอม 2
+                <table class="table table-dark">
+                <thead >
+                    <tr>
+                        <th style="width:100px">รหัสวิชา</th>
+                        <th style="width:500px">ชื่อวิชา</th>
+                        <th style="width:500px">name subject</th>
+                        <!-- <th>ปี</th>
+                        <th>เทอม</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data4 %}
+                    <tr>
+                        <td>{{row.subject_id}}</td>
+                        <td>{{row.subject_nameTh}}</td>
+                        <td>{{row.subject_nameEng}}</td>
+                        <!-- <td>{{row.year}}</td>
+                        <td>{{row.term}}</td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
 
-            ปี  3 เทอม 1
-            <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th style="width:100px">รหัสวิชา</th>
-                    <th style="width:500px">ชื่อวิชา</th>
-                    <th style="width:500px">name subject</th>
-                    <!-- <th>ปี</th>
-                    <th>เทอม</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data5 %}
-                <tr>
-                    <td>{{row.subject_id}}</td>
-                    <td>{{row.subject_nameTh}}</td>
-                    <td>{{row.subject_nameEng}}</td>
-                    <!-- <td>{{row.year}}</td>
-                    <td>{{row.term}}</td> -->
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
+            <div class="paddingtable">
+                ปี  3 เทอม 1
+                <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th style="width:100px">รหัสวิชา</th>
+                        <th style="width:500px">ชื่อวิชา</th>
+                        <th style="width:500px">name subject</th>
+                        <!-- <th>ปี</th>
+                        <th>เทอม</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data5 %}
+                    <tr>
+                        <td>{{row.subject_id}}</td>
+                        <td>{{row.subject_nameTh}}</td>
+                        <td>{{row.subject_nameEng}}</td>
+                        <!-- <td>{{row.year}}</td>
+                        <td>{{row.term}}</td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
 
-            ปี  3 เทอม 2
-            <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th style="width:100px">รหัสวิชา</th>
-                    <th style="width:500px">ชื่อวิชา</th>
-                    <th style="width:500px">name subject</th>
-                    <!-- <th>ปี</th>
-                    <th>เทอม</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data6 %}
-                <tr>
-                    <td>{{row.subject_id}}</td>
-                    <td>{{row.subject_nameTh}}</td>
-                    <td>{{row.subject_nameEng}}</td>
-                    <!-- <td>{{row.year}}</td>
-                    <td>{{row.term}}</td> -->
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
+            <div class="paddingtable">
+                ปี  3 เทอม 2
+                <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th style="width:100px">รหัสวิชา</th>
+                        <th style="width:500px">ชื่อวิชา</th>
+                        <th style="width:500px">name subject</th>
+                        <!-- <th>ปี</th>
+                        <th>เทอม</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data6 %}
+                    <tr>
+                        <td>{{row.subject_id}}</td>
+                        <td>{{row.subject_nameTh}}</td>
+                        <td>{{row.subject_nameEng}}</td>
+                        <!-- <td>{{row.year}}</td>
+                        <td>{{row.term}}</td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
 
-            ปี  4 เทอม 1
-            <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th style="width:100px">รหัสวิชา</th>
-                    <th style="width:500px">ชื่อวิชา</th>
-                    <th style="width:500px">name subject</th>
-                    <!-- <th>ปี</th>
-                    <th>เทอม</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data7 %}
-                <tr>
-                    <td>{{row.subject_id}}</td>
-                    <td>{{row.subject_nameTh}}</td>
-                    <td>{{row.subject_nameEng}}</td>
-                    <!-- <td>{{row.year}}</td>
-                    <td>{{row.term}}</td> -->
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
+            <div class="paddingtable">
+                ปี  4 เทอม 1
+                <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th style="width:100px">รหัสวิชา</th>
+                        <th style="width:500px">ชื่อวิชา</th>
+                        <th style="width:500px">name subject</th>
+                        <!-- <th>ปี</th>
+                        <th>เทอม</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data7 %}
+                    <tr>
+                        <td>{{row.subject_id}}</td>
+                        <td>{{row.subject_nameTh}}</td>
+                        <td>{{row.subject_nameEng}}</td>
+                        <!-- <td>{{row.year}}</td>
+                        <td>{{row.term}}</td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
 
-            ปี  4 เทอม 2
-            <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th style="width:100px">รหัสวิชา</th>
-                    <th style="width:500px">ชื่อวิชา</th>
-                    <th style="width:500px">name subject</th>
-                    <!-- <th>ปี</th>
-                    <th>เทอม</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data8 %}
-                <tr>
-                    <td>{{row.subject_id}}</td>
-                    <td>{{row.subject_nameTh}}</td>
-                    <td>{{row.subject_nameEng}}</td>
-                    <!-- <td>{{row.year}}</td>
-                    <td>{{row.term}}</td> -->
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
+            <div class="paddingtable">
+                ปี  4 เทอม 2
+                <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th style="width:100px">รหัสวิชา</th>
+                        <th style="width:500px">ชื่อวิชา</th>
+                        <th style="width:500px">name subject</th>
+                        <!-- <th>ปี</th>
+                        <th>เทอม</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data8 %}
+                    <tr>
+                        <td>{{row.subject_id}}</td>
+                        <td>{{row.subject_nameTh}}</td>
+                        <td>{{row.subject_nameEng}}</td>
+                        <!-- <td>{{row.year}}</td>
+                        <td>{{row.term}}</td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
         </div>
         </form>
     </div>

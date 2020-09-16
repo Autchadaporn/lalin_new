@@ -1,0 +1,54 @@
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  padding: 3px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+}
+.navbar-inverse {
+  background-color: #000000;
+}
+body{
+  /* background-color: #FFEDB9; */
+}
+body {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+
+}
+.container {
+  max-width: 940px;
+  margin-right: auto;
+  margin-left: auto;
+}
+p {
+  margin-top: 20px;
+}
+.paddingtable{
+    /* background: rgba(255, 255, 255, 0.68); */
+    background: rgba(255, 244, 92, 0.68);
+    border: 1px solid black;
+    padding: 10px 10px 10px 10px;
+    /* background-color: lightblue; */
+    margin-top: 2em;
+
+}
+
+@media screen and (max-width: 537px) {
+  body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 9px;
+    line-height: 1.42857143;
+    color: #333;
+  
+  }
+  .selectsearch{
+    font-size: 12px;
+  }
+}

@@ -6,9 +6,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{{ url_for ('static', filename='css/styleGrade.css') }}" >
-    <title>grade</title>
+    <title>คำนวณเกรด</title>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-static-top">
@@ -38,7 +37,7 @@
         <div class="container">
             <div align="center">
                 <p>เกรดเฉลี่ยทั้งหมด</p>
-                <p><input type="text" value="{{GPAX}}" size="5" readonly></p>
+                
                 <table class="table table-bordered">
                     <tr>
                         <th>รหัสนิสิต</th>
@@ -63,23 +62,39 @@
                     </tr>
                     {% endfor%}
                 </table>
+                <p><input type="text" value="{{GPAX}}" size="5" readonly></p>
+                <h3>คำนวณเกรด</h3>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>รหัสนิสิต</th>
+                        <th>รหัสวิชา</th>
+                        <th>ชื่อวิชา</th>
+                        <th>name subject</th>
+                        <th>เกรด</th>
+                        <th>หน่วยกิต</th>
+                        <th>ปี</th>
+                        <th>เทอม</th>
+                    </tr>
+                    <tr>
+                        <th>รหัสนิสิต</th>
+                        <th>รหัสวิชา</th>
+                        <th>ชื่อวิชา</th>
+                        <th>name subject</th>
+                        <th><select>
+                                <option>A</option>
+                                <option>B</option>
+                                <option>C</option>
+                                <option>D</option>
+                                <option>F</option>
+                            </select></th>
+                        <th>หน่วยกิต</th>
+                        <th>ปี</th>
+                        <th>เทอม</th>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
+    
 </body>
 </html>
-<!-- <script >
-$(document).ready(function(){
-    // liff.init(function (data) {
-        // $("#token_1").val(data.context.userId);
-        // $("#token_1").val(123456);
-        var teamData = "Ud0c7fe8f06589b9b9d075a88188318cf";
-        console.log(teamData)
-        $.ajax({
-                url: "/gradeall",
-                type: "GET",
-                data: {'result':teamData}
-        });
-    // });
-});
-</script> -->
