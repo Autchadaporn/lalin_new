@@ -49,10 +49,50 @@
     <div>
         <div class="container">
             <div align="center">
-                <p>เกรดเฉลี่ยทั้งหมด</p>
                 <div style="background-color: antiquewhite;">
                 <form action="/calculategrade" method="POST">
-                <table class="table table-bordered">
+                    <h3>คำนวณเกรด</h3>
+                    <div style="background-color: antiquewhite;">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th style="width: 10em; text-align: center;">รหัสนิสิต</th>
+                            <th style="width: 10em; text-align: center;">รหัสวิชา</th>
+                            <th style="width: 40em; text-align: center;">ชื่อวิชา</th>
+                            <th style="width: 40em; text-align: center;">name subject</th>
+                            <th style="width: 3em; text-align: center;">เกรด</th>
+                            <th style="width: 7em; text-align: center;">หน่วยกิต</th>
+                            <th style="width: 3em; text-align: center;">ปี</th>
+                            <th style="width: 3em; text-align: center;">เทอม</th>
+                        </tr>
+                        <tr>
+                            {% for row in rows %}
+                        <tr>        
+                            <td><input name="student_id[]" type="text" class="tdInput" value="{{row.student_id}}"size="6" ></td>
+                            <td><input name="subject_id[]" type="text" class="tdInput" value="{{row.subject_id}}" size="6"></td>
+                            <td><input name="subject_nameTh[]" type="text" class="tdInput" value="{{row.subject_nameTh}}" size="6"></td>
+                            <td><input name="subject_nameEng[]" type="text" class="tdInput" value="{{row.subject_nameEng}}"size="6" ></td>
+                            <td><select name="grade[]" style="width: 3em;">
+                                <option value="A" {%if row.grade == 'A' %} selected {% endif %} >A</option>
+                                <option value="B+" {%if row.grade == 'B+' %} selected {% endif %} >B+</option>
+                                <option value="B" {%if row.grade == 'B' %} selected {% endif %} >B</option>
+                                <option value="C+" {%if row.grade == 'C+' %} selected {% endif %} >C+</option>
+                                <option value="C" {%if row.grade == 'C' %} selected {% endif %} >C</option>
+                                <option value="D+" {%if row.grade == 'D+' %} selected {% endif %} >D+</option>
+                                <option value="D" {%if row.grade == 'D' %} selected {% endif %} >D</option>
+                                <option value="F" {%if row.grade == 'F' %} selected {% endif %} >F</option>
+                                <option value="W" {%if row.grade == 'W' %} selected {% endif %} >W(ไม่คำนวณเกรด)</option>
+                                </select></td>
+                            <td><input name="unit[]" type="text" class="tdInput" name="unit[]" value="{{row.unit}}" size="3" style="text-align: center;"></td>
+                            <td><input name="year[]" type="text" class="tdInput" value="{{row.year}}" size="6" style="text-align: center;"></td>
+                            <td><input name="term[]" type="text" class="tdInput" value="{{row.term}}" size="6" style="text-align: center;"></td>
+                        </tr>
+                        {% endfor%}
+                        </tr>
+                    </table>
+                    </div>
+                    <input type="submit"  value="คำนวณ" style="background-color: whitesmoke;">
+                    <input type="text" value="{{itemGPAXAll}}" style="background-color: white; width: 4em; text-align: center;" readonly>
+                <table class="table table-bordered" style="margin-top: 2em;">
                     <tr>
                         <th style="width: 10em; text-align: center;">รหัสนิสิต</th>
                         <th style="width: 10em; text-align: center;">รหัสวิชา</th>
@@ -78,47 +118,7 @@
                 </table>
                 <p><input type="text" value="{{GPAX}}"  style="background-color: white; width: 4em; text-align: center;" readonly></p>
                 </div>
-                <h3>คำนวณเกรด</h3>
-                <div style="background-color: antiquewhite;">
-                <table class="table table-bordered">
-                    <tr>
-                        <th style="width: 10em; text-align: center;">รหัสนิสิต</th>
-                        <th style="width: 10em; text-align: center;">รหัสวิชา</th>
-                        <th style="width: 40em; text-align: center;">ชื่อวิชา</th>
-                        <th style="width: 40em; text-align: center;">name subject</th>
-                        <th style="width: 3em; text-align: center;">เกรด</th>
-                        <th style="width: 7em; text-align: center;">หน่วยกิต</th>
-                        <th style="width: 3em; text-align: center;">ปี</th>
-                        <th style="width: 3em; text-align: center;">เทอม</th>
-                    </tr>
-                    <tr>
-                        {% for row in rows %}
-                    <tr>        
-                        <td><input name="student_id[]" type="text" class="tdInput" value="{{row.student_id}}"size="6" ></td>
-                        <td><input name="subject_id[]" type="text" class="tdInput" value="{{row.subject_id}}" size="6"></td>
-                        <td><input name="subject_nameTh[]" type="text" class="tdInput" value="{{row.subject_nameTh}}" size="6"></td>
-                        <td><input name="subject_nameEng[]" type="text" class="tdInput" value="{{row.subject_nameEng}}"size="6" ></td>
-                        <td><select name="grade[]" style="width: 3em;">
-                            <option value="A" {%if row.grade == 'A' %} selected {% endif %} >A</option>
-                            <option value="B+" {%if row.grade == 'B+' %} selected {% endif %} >B+</option>
-                            <option value="B" {%if row.grade == 'B' %} selected {% endif %} >B</option>
-                            <option value="C+" {%if row.grade == 'C+' %} selected {% endif %} >C+</option>
-                            <option value="C" {%if row.grade == 'C' %} selected {% endif %} >C</option>
-                            <option value="D+" {%if row.grade == 'D+' %} selected {% endif %} >D+</option>
-                            <option value="D" {%if row.grade == 'D' %} selected {% endif %} >D</option>
-                            <option value="F" {%if row.grade == 'F' %} selected {% endif %} >F</option>
-                            <option value="W" {%if row.grade == 'W' %} selected {% endif %} >W(ไม่คำนวณเกรด)</option>
-                            </select></td>
-                        <td><input name="unit[]" type="text" class="tdInput" name="unit[]" value="{{row.unit}}" size="3" style="text-align: center;"></td>
-                        <td><input name="year[]" type="text" class="tdInput" value="{{row.year}}" size="6" style="text-align: center;"></td>
-                        <td><input name="term[]" type="text" class="tdInput" value="{{row.term}}" size="6" style="text-align: center;"></td>
-                    </tr>
-                    {% endfor%}
-                    </tr>
-                </table>
-                </div>
-                <input type="submit" value="คำนวณ">
-                <input type="text" value="{{itemGPAXAll}}" style="background-color: white; width: 4em; text-align: center;" readonly>
+                
                 </form>
             </div>
         </div>

@@ -193,7 +193,7 @@ def gradecal():
 @app.route('/calculategrade',methods=['POST','GET'])
 def calculategrade():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '60020671' ") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
+    cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '60020671' ORDER BY year DESC ") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
     subject=cur.fetchall()
     # print(subject)
     
@@ -277,21 +277,45 @@ def calculategrade():
         # print("grade",grade)
         # print("unit",unit)
         # print(type(unit))
+        print("***********************************************************************")
+        print('หน่วยกิต:',unit)
+        print('เกรด:',grade)
+        print("***********************************************************************")
+
+        #---------------------เช็ค W------------------------------------
+        for i in range(len(grade)): #วนลูปเช็คว่ามี W ไหม
+            # print(Grade[i])
+            if grade[i] == 'W':
+                grade[i] = 0
+                for x in range(len(unit)): #วนหาหน่วยกิตที่ติด W
+                    if x == i:
+                        unit[x] = 0 #เปลี่ยนหน่วตกิตวิชาที่ติด W ให้มีค่าเป็น 0
+                        
+            else :
+                print(grade[i]) #เกรดที่นำมาคิด
+            
+    print("***********************************************************************")
+    print('หน่วยกิต:',unit)
+    print('เกรด:',grade)
+    print("***********************************************************************")
+
     #------------------------------ start คำนวนเกรด gpax---------------------------------#
     sumUnit= 0
     for indexUnit in range(0,len(unit)):
-        # print(unit[indexUnit])
+        print("หน่วยกิต ",unit[indexUnit])
         sumUnit = sumUnit + (float(unit[indexUnit]))
     print("sumUnit : ผลรวมหน่วยกิต",sumUnit)
 
     sum = 0
     for indexGrade in range(0,len(grade)):
         gradeCal = (tranformgrade(grade[indexGrade])) #เรียกใช้ฟังก์ชั่น tranformgrade แปลงเกรด ex. A=4.00 ,B=3.00 
-        #print(float(gradeCal))
+        print(gradeCal)
+        print(type(gradeCal))
         for indexUnit in range(0,len(unit)):
             unitCal = (unit[indexUnit])
+            print(type(unitCal))
             if indexGrade==indexUnit:
-                sumGradeUnit = float(gradeCal) * float(unitCal)
+                sumGradeUnit = float(gradeCal) * (float(unitCal))
                 sum = sum + sumGradeUnit
     # print(sum)
     X=sum1+sum
@@ -389,7 +413,7 @@ def showstudyplan():
     data8 = cur.fetchall()
     return render_template('showstudyplan.html',data1=data1,data2=data2,data3=data3,data4=data4,data5=data5,data6=data6,data7=data7,data8=data8)
 
-#-ค้นหาแผนการศึกษา-
+#--------------------------ค้นหาแผนการศึกษา------------------------------
 @app.route("/searchplan",methods=['GET','POST'])
 def searchplan():
     if request.method == 'POST':

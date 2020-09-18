@@ -49,36 +49,9 @@
     <div>
         <div class="container">
             <div align="center">
-                <p>เกรดเฉลี่ยทั้งหมด</p>
                 <div style="background-color: antiquewhite;">
                 <form action="/calculategrade" method="POST">
-                <table class="table table-bordered">
-                    <tr>
-                        <th style="width: 10em; text-align: center;">รหัสนิสิต</th>
-                        <th style="width: 10em; text-align: center;">รหัสวิชา</th>
-                        <th style="width: 40em; text-align: center;">ชื่อวิชา</th>
-                        <th style ="width: 40em; text-align: center;">name subject</th>
-                        <th style ="width: 3em; text-align: center;">เกรด</th>
-                        <th style ="width: 7em; text-align: center;">หน่วยกิต</th>
-                        <th style ="width: 3em; text-align: center;">ปี</th>
-                        <th style ="width: 3em; text-align: center;">เทอม</th>
-                    </tr>
-                    {% for row in subject %}
-                    <tr>        
-                        <td><input   type="text" class="tdInput"   value="{{row.student_id}}" readonly></td>
-                        <td><input   type="text" class="tdInput"  value="{{row.subject_id}}" size="6"></td>
-                        <td><input   type="text"  class="tdInput" value="{{row.subject_nameTh}}" size="6"></td>
-                        <td><input   type="text"  class="tdInput" value="{{row.subject_nameEng}}" size="6"></td>
-                        <td><input  type="text" class="tdInput"  value="{{row.grade}}" size="3"></td>
-                        <td><input  type="text" class="tdInput"  value="{{row.unit}}" size="3" style="text-align: center;"></td>
-                        <td><input   type="text" class="tdInput"  value="{{row.year}}" size="6" style="text-align: center;"></td>
-                        <td><input   type="text" class="tdInput"  value="{{row.term}}" size="6" style="text-align: center;"></td>
-                    </tr>
-                    {% endfor%}
-                </table>
-                <p><input type="text" value="{{GPAX}}"  style="background-color: white; width: 4em; text-align: center;"  readonly></p>
-                </div>
-                <h3>คำนวณเกรด</h3>
+                    <h3>คำนวณเกรด</h3>
                 <div style="background-color: antiquewhite;">
                 <table class="table table-bordered">
                     <tr>
@@ -117,9 +90,36 @@
                     </tr>
                 </table>
                 </div>
-                <input type="submit" value="คำนวณ">
+                <input type="submit" value="คำนวณ" style="background-color: whitesmoke;">
                 <input type="text" value="{{itemGPAX}}" style="background-color: white; width: 4em; text-align: center;" readonly>
-                </form>
+               
+                <table class="table table-bordered" style="margin-top: 2em;">
+                    <tr>
+                        <th style="width: 10em; text-align: center;">รหัสนิสิต</th>
+                        <th style="width: 10em; text-align: center;">รหัสวิชา</th>
+                        <th style="width: 40em; text-align: center;">ชื่อวิชา</th>
+                        <th style ="width: 40em; text-align: center;">name subject</th>
+                        <th style ="width: 3em; text-align: center;">เกรด</th>
+                        <th style ="width: 7em; text-align: center;">หน่วยกิต</th>
+                        <th style ="width: 3em; text-align: center;">ปี</th>
+                        <th style ="width: 3em; text-align: center;">เทอม</th>
+                    </tr>
+                    {% for row in subject %}
+                    <tr>        
+                        <td><input   type="text" class="tdInput"   value="{{row.student_id}}" readonly></td>
+                        <td><input   type="text" class="tdInput"  value="{{row.subject_id}}" size="6"></td>
+                        <td><input   type="text"  class="tdInput" value="{{row.subject_nameTh}}" size="6"></td>
+                        <td><input   type="text"  class="tdInput" value="{{row.subject_nameEng}}" size="6"></td>
+                        <td><input  type="text" class="tdInput"  value="{{row.grade}}" size="3"></td>
+                        <td><input  type="text" class="tdInput"  value="{{row.unit}}" size="3" style="text-align: center;"></td>
+                        <td><input   type="text" class="tdInput"  value="{{row.year}}" size="6" style="text-align: center;"></td>
+                        <td><input   type="text" class="tdInput"  value="{{row.term}}" size="6" style="text-align: center;"></td>
+                    </tr>
+                    {% endfor%}
+                </table>
+                <p><input type="text" value="{{GPAX}}"  style="background-color: white; width: 4em; text-align: center;"  readonly></p>
+                </div>
+                 </form>
             </div>
         </div>
     </div>

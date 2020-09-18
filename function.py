@@ -15,3 +15,7 @@ def tranformgrade(grade):
         return 1.00
     if grade == "F":
         return 0.00
+    if grade == "W":
+        return -1.00
+    if grade == 0:
+        return 0
