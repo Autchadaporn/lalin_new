@@ -23,6 +23,7 @@
     } 
 </style>
 <body>
+    <!-- ------------------------ start navbar--------------------------------------  -->
     <div class="navbar navbar-inverse navbar-static-top">
         <div class="container">
             <a href="/" class="navbar-brand">LALIN</a>
@@ -46,12 +47,23 @@
             </div>
         </div>
     </div>
+    <!-- ------------------------ stop navbar--------------------------------------  -->
     <div>
         <div class="container">
             <div align="center">
                 <div style="background-color: antiquewhite;">
-                <form action="/calculategrade" method="POST">
+                <form action="/gradecal" method="POST">
                     <h3>คำนวณเกรด</h3>
+                    ปีการศึกษา<select>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                            </select>
+                    ภาคเรียนที่<select>
+                                <option>1</option>
+                                <option>2</option>
+                            </select>
                 <div style="background-color: antiquewhite;">
                 <table class="table table-bordered">
                     <tr>
@@ -67,32 +79,44 @@
                     <tr>
                         {% for row in subjectCal  %}
                     <tr>        
-                        <td><input name="student_id[]" type="text" class="tdInput" value="{{row.student_id}}"size="6" ></td>
-                        <td><input name="subject_id[]" type="text" class="tdInput" value="{{row.subject_id}}" size="6"></td>
-                        <td><input name="subject_nameTh[]" type="text" class="tdInput" value="{{row.subject_nameTh}}" size="6"></td>
-                        <td><input name="subject_nameEng[]" type="text" class="tdInput" value="{{row.subject_nameEng}}"size="6" ></td>
-                        <td><select name="grade[]" style="width: 3em;">
-                            <option value="A">A</option>
-                            <option value="B+">B+</option>
-                            <option value="B">B</option>
-                            <option value="C+">C+</option>
-                            <option value="C">C</option>
-                            <option value="D+">D+</option>
-                            <option value="D">D</option>
-                            <option value="F">F</option>
-                            <option value="W">W(ไม่คำนวณเกรด)</option>
-                            </select></td>
-                        <td><input name="unit[]" type="text" class="tdInput"  value="{{row.unit}}" size="3" style="text-align: center;"></td>
-                        <td><input name="year[]" type="text" class="tdInput" value="{{row.year}}" size="6" style="text-align: center;"></td>
-                        <td><input name="term[]" type="text" class="tdInput" value="{{row.term}}" size="6" style="text-align: center;"></td>
+                        <td><input name="student_id[]" type="text" class="tdInput" value="{{row.student_id}}"size="6" readonly></td>
+                        <td><input name="subject_id[]" type="text" class="tdInput" value="{{row.subject_id}}" size="6" readonly></td>
+                        <td><input name="subject_nameTh[]" type="text" class="tdInput" value="{{row.subject_nameTh}}" size="6" readonly></td>
+                        <td><input name="subject_nameEng[]" type="text" class="tdInput" value="{{row.subject_nameEng}}"size="6" readonly></td>
+                        <!-- เช็ควิชาว่าเป็นวิชา -->
+                            {% if row.subject_id == '225491' or row.subject_id =='225492' or row.subject_id =='225493' or row.subject_id =='225494' or row.subject_id =='225495' %}
+                            <td><select name="grade[]" style="width: 3em;">
+                                <option value="I">I</optio>
+                                <option value="P">P</option>
+                                <option value="S">S</option>
+                                <option value="U">U</option>
+                                <option value="W">W(ไม่คำนวณเกรด)</option>
+                                </select></td>
+                            
+                            {% else  %}
+                            <td><select name="grade[]" style="width: 3em;">
+                                <option value="A">A</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="C+">C+</option>
+                                <option value="C">C</option>
+                                <option value="D+">D+</option>
+                                <option value="D">D</option>
+                                <option value="F">F</option>
+                                <option value="W">W(ไม่คำนวณเกรด)</option>
+                                </select></td>
+                            {% endif %}
+                        <td><input name="unit[]" type="text" class="tdInput"  value="{{row.unit}}" size="3" style="text-align: center;" readonly></td>
+                        <td><input name="year[]" type="text" class="tdInput" value="{{row.year}}" size="6" style="text-align: center;" readonly></td>
+                        <td><input name="term[]" type="text" class="tdInput" value="{{row.term}}" size="6" style="text-align: center;" readonly></td>
                     </tr>
                     {% endfor%}
                     </tr>
                 </table>
                 </div>
+                เกรดเฉี่ลยต่อเทอม<input type="text" value="{{itemGPA}}" style="background-color: white; width: 4em; text-align: center;" readonly>
+                เกรดเฉลี่ยรวม<input type="text" value="{{itemGPAX}}" style="background-color: white; width: 4em; text-align: center;" readonly>
                 <input type="submit" value="คำนวณ" style="background-color: whitesmoke;">
-                <input type="text" value="{{itemGPAX}}" style="background-color: white; width: 4em; text-align: center;" readonly>
-               
                 <table class="table table-bordered" style="margin-top: 2em;">
                     <tr>
                         <th style="width: 10em; text-align: center;">รหัสนิสิต</th>
@@ -107,13 +131,13 @@
                     {% for row in subject %}
                     <tr>        
                         <td><input   type="text" class="tdInput"   value="{{row.student_id}}" readonly></td>
-                        <td><input   type="text" class="tdInput"  value="{{row.subject_id}}" size="6"></td>
-                        <td><input   type="text"  class="tdInput" value="{{row.subject_nameTh}}" size="6"></td>
-                        <td><input   type="text"  class="tdInput" value="{{row.subject_nameEng}}" size="6"></td>
+                        <td><input   type="text" class="tdInput"  value="{{row.subject_id}}" size="6" readonly></td>
+                        <td><input   type="text"  class="tdInput" value="{{row.subject_nameTh}}" size="6" readonly></td>
+                        <td><input   type="text"  class="tdInput" value="{{row.subject_nameEng}}" size="6" readonly></td>
                         <td><input  type="text" class="tdInput"  value="{{row.grade}}" size="3"></td>
-                        <td><input  type="text" class="tdInput"  value="{{row.unit}}" size="3" style="text-align: center;"></td>
-                        <td><input   type="text" class="tdInput"  value="{{row.year}}" size="6" style="text-align: center;"></td>
-                        <td><input   type="text" class="tdInput"  value="{{row.term}}" size="6" style="text-align: center;"></td>
+                        <td><input  type="text" class="tdInput"  value="{{row.unit}}" size="3" style="text-align: center;" readonly></td>
+                        <td><input   type="text" class="tdInput"  value="{{row.year}}" size="6" style="text-align: center;" readonly></td>
+                        <td><input   type="text" class="tdInput"  value="{{row.term}}" size="6" style="text-align: center;" readonly></td>
                     </tr>
                     {% endfor%}
                 </table>

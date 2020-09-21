@@ -134,7 +134,7 @@ def gradeall():
 
 
 #------------------------------------------ -คำนวณเกรด---------------------------------
-@app.route('/gradecal')
+@app.route('/gradecal',methods=['POST','GET'])
 def gradecal():
     # print("ตรงนี้",data)
     # cur = mysql.connection.cursor()
@@ -142,135 +142,10 @@ def gradecal():
     # studentId=cur.fetchall()
     # studentId=(studentId[0]['member_id'])
     # print(studentId)
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '60020671' ") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
-    subject=cur.fetchall()
-    # print(subject)
-    
-    #------------------------------ start คำนวนเกรด gpax---------------------------------#
-    cur.execute("SELECT unit FROM student_grade WHERE student_id = '60020671' ")
-    unit = cur.fetchall()
-    sumUnit = 0 
-    for indexUnit in range(0,len(unit)):
-        unitCal = (unit[indexUnit]['unit'])
-        # print (float(unitcal))
-        sumUnit = sumUnit + float(unitCal) 
-    # print(sumnUit)
 
-    cur.execute("SELECT grade FROM student_grade WHERE student_id = '60020671' ")
-    grade = cur.fetchall()
-    #print(grade)
-    sum = 0
-    for indexGrade in range(0,len(grade)):
-        gradeCal = (tranformgrade(grade[indexGrade]['grade'])) #เรียกใช้ฟังก์ชั่น tranformgrade แปลงเกรด ex. A=4.00 ,B=3.00 
-        #print(float(gradeCal))
-        for indexUnit in range(0,len(unit)):
-            unitCal = (unit[indexUnit]['unit'])
-            if indexGrade==indexUnit:
-                sumGradeUnit = float(gradeCal) * float(unitCal)
-                sum = sum + sumGradeUnit
-    # print(sum)
-    GPAX = sum/sumUnit
-    #---- start แสดงทศนิยม2ตำแหน่ง---------#
-    x = str(GPAX)
-    # print(type(x))
-    
-    itemGPAX = ""
-    for i in range(0,4):
-        itemGPAX = itemGPAX + x[i]
-    print(itemGPAX)
-    #------ stop แสดงทศนิยม2ตำแหน่ง--------#
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT subject.subject_id,subject.subject_nameTh, subject.subject_nameEng, subject.unit ,study_plan.year ,study_plan.term FROM subject JOIN study_plan ON subject.subject_id = study_plan.subject_id WHERE study_plan.year ='4' AND study_plan.term='1' AND study_plan.plan_id='60' ")
-    subjectCal = cur.fetchall()
-    #------------------------------ stop คำนวนเกรด gpax---------------------------------#
-    return render_template('gradecal.html',subject=subject,GPAX=itemGPAX,subjectCal=subjectCal)
-
-
-
-
-#--------------------ส่งค่าจาก gradecal.html มาคำนวณ-----------------------------------
-@app.route('/calculategrade',methods=['POST','GET'])
-def calculategrade():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '60020671'") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
-    subject=cur.fetchall()
-    # print(subject)
-    
-    #------------------------------ start คำนวนเกรด gpax---------------------------------#
-    cur.execute("SELECT unit FROM student_grade WHERE student_id = '60020671' ")
-    unit = cur.fetchall()
-    sumUnit1 = 0 
-    for indexUnit in range(0,len(unit)):
-        unitCal = (unit[indexUnit]['unit'])
-        # print (float(unitcal))
-        sumUnit1 = sumUnit1 + float(unitCal) 
-    print("แสดงผลsumUnit1 ก่อน:",sumUnit1)
-
-    cur.execute("SELECT grade FROM student_grade WHERE student_id = '60020671' ")
-    grade = cur.fetchall()
-    #print(grade)
-    sum1 = 0
-    for indexGrade in range(0,len(grade)):
-        gradeCal = (tranformgrade(grade[indexGrade]['grade'])) #เรียกใช้ฟังก์ชั่น tranformgrade แปลงเกรด ex. A=4.00 ,B=3.00 
-        #print(float(gradeCal))
-        for indexUnit in range(0,len(unit)):
-            unitCal = (unit[indexUnit]['unit'])
-            if indexGrade==indexUnit:
-                sumGradeUnit = float(gradeCal) * float(unitCal)
-                sum1 = sum1 + sumGradeUnit
-    print("แสดงค่า sum1 ก่อน",sum1)
-    GPAX = sum1/sumUnit1
-    #---- start แสดงทศนิยม2ตำแหน่ง---------#
-    x = str(GPAX)
-    # print(type(x))
-    
-    itemGPAX = ""
-    for i in range(0,4):
-        itemGPAX = itemGPAX + x[i]
-    print(itemGPAX)
-    #------ stop แสดงทศนิยม2ตำแหน่ง--------#
-
-    
-    # รับค่ามาแสดงเป็น json 
-    if request.method == 'POST':
-        student_id = request.form.getlist("student_id[]")
-        subject_id = request.form.getlist("subject_id[]")
-        subject_nameTh = request.form.getlist("subject_nameTh[]") #รับค่าเป็น list จากform index.html
-        subject_nameEng = request.form.getlist("subject_nameEng[]")
-        grade = request.form.getlist("grade[]")
-        unit = request.form.getlist("unit[]")
-        year = request.form.getlist("year[]")
-        term = request.form.getlist("term[]")
-     # ---------------------- start  ส่งค่าแล้วprintออกมาเป็นjson -------------------------
-    headers = ('student_id','subject_id','subject_nameTh', 'subject_nameEng', 'grade','unit','year','term')
-    values = (
-        request.form.getlist("student_id[]"),
-        request.form.getlist("subject_id[]"),
-        request.form.getlist("subject_nameTh[]"), #รับค่าเป็น list จากform index.html
-        request.form.getlist("subject_nameEng[]"),
-        request.form.getlist("grade[]"),
-        request.form.getlist("unit[]"),
-        request.form.getlist("year[]"),
-        request.form.getlist("term[]"),        
-    )
-    items = [{} for i in range(len(values[0]))]
-    for x,i in enumerate(values):  #enumerate เป็นคำสั่งสำหรับแจกแจงค่า index และข้อมูลใน index ในรูปแบบทูเพิล (Tuple) ดังนี้ (Index,Value) โดยต้องใช้กับข้อมูลชนิด list
-        print(x,i)
-        for _x,_i in enumerate(i): 
-            items[_x][headers[x]] = _i
-    result = jsonify(items)
-    #print("---------------------------------------------------")
-    # print(result)
-    # print(items)
-    
-    # rows = json.dumps(items)
-    rows=items
-    print(rows)
-    #print("---------------------------------------------------")
-    # -------------------- stop  ส่งค่าแล้วprintออกมาเป็นjson-----------------------
-
-        #------------รับค่าามาจาก gradecal.html--------------
+    #--------- ถ้ามีค่าส่งมา เป็น post -------#
+    grade =[]
+    unit=[]
     if request.method == 'POST':
         grade = request.form.getlist('grade[]')
         unit = request.form.getlist('unit[]')
@@ -281,11 +156,10 @@ def calculategrade():
         print('หน่วยกิต:',unit)
         print('เกรด:',grade)
         print("***********************************************************************")
-
-        #---------------------เช็ค W------------------------------------
+         #---------------------เช็ค W------------------------------------
         for i in range(len(grade)): #วนลูปเช็คว่ามี W ไหม
             # print(Grade[i])
-            if grade[i] == 'W':
+            if (grade[i] == 'W') or (grade[i] == 'P') or (grade[i] == 'I') or (grade[i] == 'S') or (grade[i] == 'U'):
                 grade[i] = 0
                 for x in range(len(unit)): #วนหาหน่วยกิตที่ติด W
                     if x == i:
@@ -294,48 +168,375 @@ def calculategrade():
             else :
                 print(grade[i]) #เกรดที่นำมาคิด
             
-    print("***********************************************************************")
-    print('หน่วยกิต:',unit)
-    print('เกรด:',grade)
-    print("***********************************************************************")
+        print("***********************************************************************")
+        print('หน่วยกิต:',unit)
+        print('เกรด:',grade)
+        print("***********************************************************************")
 
-    #------------------------------ start คำนวนเกรด gpax---------------------------------#
-    sumUnit= 0
-    for indexUnit in range(0,len(unit)):
-        print("หน่วยกิต ",unit[indexUnit])
-        sumUnit = sumUnit + (float(unit[indexUnit]))
-    print("sumUnit : ผลรวมหน่วยกิต",sumUnit)
-
-    sum = 0
-    for indexGrade in range(0,len(grade)):
-        gradeCal = (tranformgrade(grade[indexGrade])) #เรียกใช้ฟังก์ชั่น tranformgrade แปลงเกรด ex. A=4.00 ,B=3.00 
-        print(gradeCal)
-        print(type(gradeCal))
+        #------------------------------ start คำนวนเกรด gpax---------------------------------#
+        sumUnit= 0
         for indexUnit in range(0,len(unit)):
-            unitCal = (unit[indexUnit])
-            print(type(unitCal))
-            if indexGrade==indexUnit:
-                sumGradeUnit = float(gradeCal) * (float(unitCal))
-                sum = sum + sumGradeUnit
-    # print(sum)
-    X=sum1+sum
-    print(X)
-    Y=sumUnit1+sumUnit
-    # GPA = sum/sumUnit
-    GPA = X/Y
-    #---- start แสดงทศนิยม2ตำแหน่ง---------#
-    GPA = '%.4f'%(GPA) #ทำให้เป็นทศนิยม4ตำแหน่ง
-    x = str(GPA)
-    # print(type(x))
-    
-    itemGPAXAll = ""
-    for i in range(0,4):
-        itemGPAXAll = itemGPAXAll+ x[i]
-    print("itemGPAXAll : เกรดเฉลี่ย",itemGPAXAll) #เกรดที่ได้จากการคำนวณรต่อเทอม
-    # ------ stop แสดงทศนิยม2ตำแหน่ง--------#
+            # print("หน่วยกิต ",unit[indexUnit])
+            sumUnit = sumUnit + (float(unit[indexUnit]))
+        print("sumUnit : ผลรวมหน่วยกิต",sumUnit)
+
+        sum = 0
+        for indexGrade in range(0,len(grade)):
+            gradeCal = (tranformgrade(grade[indexGrade])) #เรียกใช้ฟังก์ชั่น tranformgrade แปลงเกรด ex. A=4.00 ,B=3.00 
+            # print(gradeCal)
+            # print(type(gradeCal))
+            for indexUnit in range(0,len(unit)):
+                unitCal = (unit[indexUnit])
+                # print(type(unitCal))
+                if indexGrade==indexUnit:
+                    sumGradeUnit = float(gradeCal) * (float(unitCal))
+                    sum = sum + sumGradeUnit
+        GPA = sum/sumUnit
+        GPA = '%.4f'%(GPA)
+        x = str(GPA)
+        itemGPA = ""
+        for i in range(0,4):
+            itemGPA = itemGPA+ x[i]
+        print("itemGPA : เกรดเฉลี่ย",itemGPA)
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '60020671'") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
+        subject=cur.fetchall()
+        # print(subject)
         
-    return render_template('gradecalShow.html',rows=rows,subject=subject,GPAX=itemGPAX,itemGPAXAll=itemGPAXAll)
-    # return redirect(url_for('gradecal',itemGPAX=itemGPAX))
+        #------------------------------ start คำนวนเกรด gpax---------------------------------#
+        cur.execute("SELECT unit FROM student_grade WHERE student_id = '60020671' ")
+        unit = cur.fetchall()
+        sumUnit1 = 0 
+        for indexUnit in range(0,len(unit)):
+            unitCal = (unit[indexUnit]['unit'])
+            # print (float(unitcal))
+            sumUnit1 = sumUnit1 + float(unitCal) 
+        print("แสดงผลsumUnit1 ก่อน:",sumUnit1)
+
+        cur.execute("SELECT grade FROM student_grade WHERE student_id = '60020671' ")
+        grade = cur.fetchall()
+        #print(grade)
+        sum1 = 0
+        for indexGrade in range(0,len(grade)):
+            gradeCal = (tranformgrade(grade[indexGrade]['grade'])) #เรียกใช้ฟังก์ชั่น tranformgrade แปลงเกรด ex. A=4.00 ,B=3.00 
+            #print(float(gradeCal))
+            for indexUnit in range(0,len(unit)):
+                unitCal = (unit[indexUnit]['unit'])
+                if indexGrade==indexUnit:
+                    sumGradeUnit = float(gradeCal) * float(unitCal)
+                    sum1 = sum1 + sumGradeUnit
+        print("แสดงค่า sum1 ก่อน",sum1)
+        GPAX = sum1/sumUnit1
+        #---- start แสดงทศนิยม2ตำแหน่ง---------#
+        x = str(GPAX)
+        # print(type(x))
+        
+        itemGPAX = ""
+        for i in range(0,4):
+            itemGPAX = itemGPAX + x[i]
+        print(itemGPAX)
+        #------ stop แสดงทศนิยม2ตำแหน่ง--------#
+
+        
+        # รับค่ามาแสดงเป็น json 
+        if request.method == 'POST':
+            student_id = request.form.getlist("student_id[]")
+            subject_id = request.form.getlist("subject_id[]")
+            subject_nameTh = request.form.getlist("subject_nameTh[]") #รับค่าเป็น list จากform index.html
+            subject_nameEng = request.form.getlist("subject_nameEng[]")
+            grade = request.form.getlist("grade[]")
+            unit = request.form.getlist("unit[]")
+            year = request.form.getlist("year[]")
+            term = request.form.getlist("term[]")
+        # ---------------------- start  ส่งค่าแล้วprintออกมาเป็นjson -------------------------
+        headers = ('student_id','subject_id','subject_nameTh', 'subject_nameEng', 'grade','unit','year','term')
+        values = (
+            request.form.getlist("student_id[]"),
+            request.form.getlist("subject_id[]"),
+            request.form.getlist("subject_nameTh[]"), #รับค่าเป็น list จากform index.html
+            request.form.getlist("subject_nameEng[]"),
+            request.form.getlist("grade[]"),
+            request.form.getlist("unit[]"),
+            request.form.getlist("year[]"),
+            request.form.getlist("term[]"),        
+        )
+        items = [{} for i in range(len(values[0]))]
+        for x,i in enumerate(values):  #enumerate เป็นคำสั่งสำหรับแจกแจงค่า index และข้อมูลใน index ในรูปแบบทูเพิล (Tuple) ดังนี้ (Index,Value) โดยต้องใช้กับข้อมูลชนิด list
+            # print(x,i)
+            for _x,_i in enumerate(i): 
+                items[_x][headers[x]] = _i
+        result = jsonify(items)
+        #print("---------------------------------------------------")
+        # print(result)
+        # print(items)
+        
+        # rows = json.dumps(items)
+        rows=items
+        # print(rows)
+        #print("---------------------------------------------------")
+        # -------------------- stop  ส่งค่าแล้วprintออกมาเป็นjson-----------------------
+
+         #------------รับค่าามาจาก gradecal.html--------------
+        if request.method == 'POST':
+            grade = request.form.getlist('grade[]')
+            unit = request.form.getlist('unit[]')
+            # print("grade",grade)
+            # print("unit",unit)
+            # print(type(unit))
+            print("***********************************************************************")
+            print('หน่วยกิต:',unit)
+            print('เกรด:',grade)
+            print("***********************************************************************")
+
+            #---------------------เช็ค W------------------------------------
+            for i in range(len(grade)): #วนลูปเช็คว่ามี W ไหม
+                # print(Grade[i])
+                if (grade[i] == 'W') or (grade[i] == 'P') or (grade[i] == 'I') or (grade[i] == 'S') or (grade[i] == 'U') :
+                    grade[i] = 0
+                    for x in range(len(unit)): #วนหาหน่วยกิตที่ติด W
+                        if x == i:
+                            unit[x] = 0 #เปลี่ยนหน่วตกิตวิชาที่ติด W ให้มีค่าเป็น 0
+                            
+                else :
+                    print(grade[i]) #เกรดที่นำมาคิด
+                
+        print("***********************************************************************")
+        print('หน่วยกิต:',unit)
+        print('เกรด:',grade)
+        print("***********************************************************************")
+
+        #------------------------------ start คำนวนเกรด gpax---------------------------------#
+        sumUnit= 0
+        for indexUnit in range(0,len(unit)):
+            # print("หน่วยกิต ",unit[indexUnit])
+            sumUnit = sumUnit + (float(unit[indexUnit]))
+        print("sumUnit : ผลรวมหน่วยกิต",sumUnit)
+
+        sum = 0
+        for indexGrade in range(0,len(grade)):
+            gradeCal = (tranformgrade(grade[indexGrade])) #เรียกใช้ฟังก์ชั่น tranformgrade แปลงเกรด ex. A=4.00 ,B=3.00 
+            # print(gradeCal)
+            # print(type(gradeCal))
+            for indexUnit in range(0,len(unit)):
+                unitCal = (unit[indexUnit])
+                # print(type(unitCal))
+                if indexGrade==indexUnit:
+                    sumGradeUnit = float(gradeCal) * (float(unitCal))
+                    sum = sum + sumGradeUnit
+        # print(sum)
+        X=sum1+sum
+        Y=sumUnit1+sumUnit
+        # GPA = sum/sumUnit
+        GPA = X/Y
+        #---- start แสดงทศนิยม2ตำแหน่ง---------#
+        GPA = '%.4f'%(GPA) #ทำให้เป็นทศนิยม4ตำแหน่ง
+        x = str(GPA)
+        # print(type(x))
+        
+        itemGPAXAll = ""
+        for i in range(0,4):
+            itemGPAXAll = itemGPAXAll+ x[i]
+        print("itemGPAXAll : เกรดเฉลี่ย",itemGPAXAll) #เกรดที่ได้จากการคำนวณรต่อเทอม
+        # ------ stop แสดงทศนิยม2ตำแหน่ง--------#
+        return render_template('gradecalShow.html',itemGPA=itemGPA,rows=rows,subject=subject,GPAX=itemGPAX,itemGPAXAll=itemGPAXAll)
+
+    else:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '60020671' ") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
+        subject=cur.fetchall()
+        # print(subject)
+        
+        #------------------------------ start คำนวนเกรด gpax---------------------------------#
+        cur.execute("SELECT unit FROM student_grade WHERE student_id = '60020671' ")
+        unit = cur.fetchall()
+        sumUnit = 0 
+        for indexUnit in range(0,len(unit)):
+            unitCal = (unit[indexUnit]['unit'])
+            # print (float(unitcal))
+            sumUnit = sumUnit + float(unitCal) 
+        # print(sumnUit)
+
+        cur.execute("SELECT grade FROM student_grade WHERE student_id = '60020671' ")
+        grade = cur.fetchall()
+        #print(grade)
+        sum = 0
+        for indexGrade in range(0,len(grade)):
+            gradeCal = (tranformgrade(grade[indexGrade]['grade'])) #เรียกใช้ฟังก์ชั่น tranformgrade แปลงเกรด ex. A=4.00 ,B=3.00 
+            #print(float(gradeCal))
+            for indexUnit in range(0,len(unit)):
+                unitCal = (unit[indexUnit]['unit'])
+                if indexGrade==indexUnit:
+                    sumGradeUnit = float(gradeCal) * float(unitCal)
+                    sum = sum + sumGradeUnit
+        # print(sum)
+        GPAX = sum/sumUnit
+        #---- start แสดงทศนิยม2ตำแหน่ง ---------#
+        x = str(GPAX)
+        # print(type(x))
+        
+        itemGPAX = ""
+        for i in range(0,4):
+            itemGPAX = itemGPAX + x[i]
+        print(itemGPAX)
+        #------ stop แสดงทศนิยม2ตำแหน่ง --------#
+        #------------------------------ stop คำนวนเกรด gpax---------------------------------#
+        
+        #--------- แผนการเรียนที่จะนำมาคำนวณเกรด-----------#
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT subject.subject_id,subject.subject_nameTh, subject.subject_nameEng, subject.unit ,study_plan.year ,study_plan.term FROM subject JOIN study_plan ON subject.subject_id = study_plan.subject_id WHERE study_plan.year ='4' AND study_plan.term='1' AND study_plan.plan_id='60' ")
+        subjectCal = cur.fetchall()
+        return render_template('gradecal.html',subject=subject,GPAX=itemGPAX,subjectCal=subjectCal)
+    
+
+
+
+
+# #--------------------ส่งค่าจาก gradecal.html มาคำนวณ-----------------------------------
+# @app.route('/calculategrade',methods=['POST','GET'])
+# def calculategrade():
+#     cur = mysql.connection.cursor()
+#     cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '60020671'") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
+#     subject=cur.fetchall()
+#     # print(subject)
+    
+#     #------------------------------ start คำนวนเกรด gpax---------------------------------#
+#     cur.execute("SELECT unit FROM student_grade WHERE student_id = '60020671' ")
+#     unit = cur.fetchall()
+#     sumUnit1 = 0 
+#     for indexUnit in range(0,len(unit)):
+#         unitCal = (unit[indexUnit]['unit'])
+#         # print (float(unitcal))
+#         sumUnit1 = sumUnit1 + float(unitCal) 
+#     print("แสดงผลsumUnit1 ก่อน:",sumUnit1)
+
+#     cur.execute("SELECT grade FROM student_grade WHERE student_id = '60020671' ")
+#     grade = cur.fetchall()
+#     #print(grade)
+#     sum1 = 0
+#     for indexGrade in range(0,len(grade)):
+#         gradeCal = (tranformgrade(grade[indexGrade]['grade'])) #เรียกใช้ฟังก์ชั่น tranformgrade แปลงเกรด ex. A=4.00 ,B=3.00 
+#         #print(float(gradeCal))
+#         for indexUnit in range(0,len(unit)):
+#             unitCal = (unit[indexUnit]['unit'])
+#             if indexGrade==indexUnit:
+#                 sumGradeUnit = float(gradeCal) * float(unitCal)
+#                 sum1 = sum1 + sumGradeUnit
+#     print("แสดงค่า sum1 ก่อน",sum1)
+#     GPAX = sum1/sumUnit1
+#     #---- start แสดงทศนิยม2ตำแหน่ง---------#
+#     x = str(GPAX)
+#     # print(type(x))
+    
+#     itemGPAX = ""
+#     for i in range(0,4):
+#         itemGPAX = itemGPAX + x[i]
+#     print(itemGPAX)
+#     #------ stop แสดงทศนิยม2ตำแหน่ง--------#
+
+    
+#     # รับค่ามาแสดงเป็น json 
+#     if request.method == 'POST':
+#         student_id = request.form.getlist("student_id[]")
+#         subject_id = request.form.getlist("subject_id[]")
+#         subject_nameTh = request.form.getlist("subject_nameTh[]") #รับค่าเป็น list จากform index.html
+#         subject_nameEng = request.form.getlist("subject_nameEng[]")
+#         grade = request.form.getlist("grade[]")
+#         unit = request.form.getlist("unit[]")
+#         year = request.form.getlist("year[]")
+#         term = request.form.getlist("term[]")
+#      # ---------------------- start  ส่งค่าแล้วprintออกมาเป็นjson -------------------------
+#     headers = ('student_id','subject_id','subject_nameTh', 'subject_nameEng', 'grade','unit','year','term')
+#     values = (
+#         request.form.getlist("student_id[]"),
+#         request.form.getlist("subject_id[]"),
+#         request.form.getlist("subject_nameTh[]"), #รับค่าเป็น list จากform index.html
+#         request.form.getlist("subject_nameEng[]"),
+#         request.form.getlist("grade[]"),
+#         request.form.getlist("unit[]"),
+#         request.form.getlist("year[]"),
+#         request.form.getlist("term[]"),        
+#     )
+#     items = [{} for i in range(len(values[0]))]
+#     for x,i in enumerate(values):  #enumerate เป็นคำสั่งสำหรับแจกแจงค่า index และข้อมูลใน index ในรูปแบบทูเพิล (Tuple) ดังนี้ (Index,Value) โดยต้องใช้กับข้อมูลชนิด list
+#         # print(x,i)
+#         for _x,_i in enumerate(i): 
+#             items[_x][headers[x]] = _i
+#     result = jsonify(items)
+#     #print("---------------------------------------------------")
+#     # print(result)
+#     # print(items)
+    
+#     # rows = json.dumps(items)
+#     rows=items
+#     # print(rows)
+#     #print("---------------------------------------------------")
+#     # -------------------- stop  ส่งค่าแล้วprintออกมาเป็นjson-----------------------
+
+#         #------------รับค่าามาจาก gradecal.html--------------
+#     if request.method == 'POST':
+#         grade = request.form.getlist('grade[]')
+#         unit = request.form.getlist('unit[]')
+#         # print("grade",grade)
+#         # print("unit",unit)
+#         # print(type(unit))
+#         print("***********************************************************************")
+#         print('หน่วยกิต:',unit)
+#         print('เกรด:',grade)
+#         print("***********************************************************************")
+
+#         #---------------------เช็ค W------------------------------------
+#         for i in range(len(grade)): #วนลูปเช็คว่ามี W ไหม
+#             # print(Grade[i])
+#             if grade[i] == 'W':
+#                 grade[i] = 0
+#                 for x in range(len(unit)): #วนหาหน่วยกิตที่ติด W
+#                     if x == i:
+#                         unit[x] = 0 #เปลี่ยนหน่วตกิตวิชาที่ติด W ให้มีค่าเป็น 0
+                        
+#             else :
+#                 print(grade[i]) #เกรดที่นำมาคิด
+            
+#     print("***********************************************************************")
+#     print('หน่วยกิต:',unit)
+#     print('เกรด:',grade)
+#     print("***********************************************************************")
+
+#     #------------------------------ start คำนวนเกรด gpax---------------------------------#
+#     sumUnit= 0
+#     for indexUnit in range(0,len(unit)):
+#         # print("หน่วยกิต ",unit[indexUnit])
+#         sumUnit = sumUnit + (float(unit[indexUnit]))
+#     print("sumUnit : ผลรวมหน่วยกิต",sumUnit)
+
+#     sum = 0
+#     for indexGrade in range(0,len(grade)):
+#         gradeCal = (tranformgrade(grade[indexGrade])) #เรียกใช้ฟังก์ชั่น tranformgrade แปลงเกรด ex. A=4.00 ,B=3.00 
+#         # print(gradeCal)
+#         # print(type(gradeCal))
+#         for indexUnit in range(0,len(unit)):
+#             unitCal = (unit[indexUnit])
+#             # print(type(unitCal))
+#             if indexGrade==indexUnit:
+#                 sumGradeUnit = float(gradeCal) * (float(unitCal))
+#                 sum = sum + sumGradeUnit
+#     # print(sum)
+#     X=sum1+sum
+#     Y=sumUnit1+sumUnit
+#     # GPA = sum/sumUnit
+#     GPA = X/Y
+#     #---- start แสดงทศนิยม2ตำแหน่ง---------#
+#     GPA = '%.4f'%(GPA) #ทำให้เป็นทศนิยม4ตำแหน่ง
+#     x = str(GPA)
+#     # print(type(x))
+    
+#     itemGPAXAll = ""
+#     for i in range(0,4):
+#         itemGPAXAll = itemGPAXAll+ x[i]
+#     print("itemGPAXAll : เกรดเฉลี่ย",itemGPAXAll) #เกรดที่ได้จากการคำนวณรต่อเทอม
+#     # ------ stop แสดงทศนิยม2ตำแหน่ง--------#
+        
+#     return render_template('gradecalShow.html',rows=rows,subject=subject,GPAX=itemGPAX,itemGPAXAll=itemGPAXAll)
+#     # return redirect(url_for('gradecal',itemGPAX=itemGPAX))
 
 
 
