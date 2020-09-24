@@ -24,9 +24,17 @@
 
 .navbar {
   min-height: 79px;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 .navbar-inverse .navbar-brand {
   color: #000000;
+}
+.selectsearch{
+  font-size: 12px;
+  margin-top: 5em
 }
 body{
   background-color: #fdffd1;
@@ -69,8 +77,9 @@ element.style {
     color: #5a0202;
   
   }
-  .selectsearch{
+  .selectsearch {
     font-size: 12px;
+    margin-top: 5em;
   }
   .paddingtable {
     /* background: rgba(255, 255, 255, 0.68); */
@@ -84,6 +93,8 @@ element.style {
   }
   .navbar {
     min-height: 53px;
+      
+    
   }
   .navbar-brand {
     float: left;

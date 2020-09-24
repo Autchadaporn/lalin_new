@@ -446,24 +446,28 @@ def submitgradecal():
         print('-------------------')
         print(gpa,gpax)
         
-        #บันทึกลงวิชาdatabase
-        # for index in range(len(student_id)):
-        #     # print(index)
-        #     cur = mysql.connection.cursor()
-        #     cur.execute (" INSERT INTO student_grade_cal (student_id,subject_id,grade_cal,term,year,unit) VALUES (%s,%s,%s,%s,%s,%s)",(student_id[index],subject_id[index],grade_cal[index],term[index],year[index],unit[index])) 
-        #     # print(cur.execute)
-        #     mysql.connection.commit()
+        
+        #ลบข้อมูลในตาราง student_grade_cal ก่อนบันทึกข้อมูล
+        cur=mysql.connection.cursor()
+        cur.execute("DELETE FROM student_grade_cal WHERE student_id = '"+student_id[0]+"'")
+        mysql.connection.commit()
+        # บันทึกลงวิชาdatabase
+        for index in range(len(unit)):
+            # print(index)
+            cur = mysql.connection.cursor()
+            cur.execute (" INSERT INTO student_grade_cal (student_id,subject_id,grade_cal,term,year,unit) VALUES (%s,%s,%s,%s,%s,%s)",(student_id[index],subject_id[index],grade_cal[index],term[index],year[index],unit[index])) 
+            print(cur.execute)
+            mysql.connection.commit()
         
         student_id = student_id[0]
-        
-        #ลบเกรดของนิสิตที่มีอยู่แล้วก่อน 
+        #ลบเกรดของนิสิตที่มีอยู่ test ก่อนบันทึกข้อมูล
         cur=mysql.connection.cursor()
-        cur.execute("DELETE FROM test WHERE student_id = '"+student_id+"'")
+        cur.execute("DELETE FROM student_gpax WHERE student_id = '"+student_id+"'")
         mysql.connection.commit()
         
-        #เพิ่เกรดลงไปในdatabase
+        #เพิ่มเกรดลงไปในdatabase
         cur=mysql.connection.cursor()
-        cur.execute(" INSERT INTO test (student_id,gpa,gpax) VALUES (%s,%s,%s)",(student_id,gpa,gpax))
+        cur.execute(" INSERT INTO student_gpax (student_id,gpa,gpax) VALUES (%s,%s,%s)",(student_id,gpa,gpax))
         mysql.connection.commit()
         
 
