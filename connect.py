@@ -467,7 +467,7 @@ def submitgradecal():
         mysql.connection.commit()
         
 
-    return render_template('test2.html')
+    return redirect(url_for('gradecal'))
 
 
 
