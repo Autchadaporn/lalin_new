@@ -4,6 +4,9 @@ from sqlalchemy import text
 from function import * #เรียกใช้ function จากไฟล์ function.py 
 import bcrypt
 
+from datetime import datetime #เวลา
+
+
 # from flask_wtf import FlaskForm
 # from wtforms import StringField, FieldList, FormField, SubmitField
 # from wtforms.validators import DataRequired 
@@ -128,11 +131,6 @@ def gradeall():
 
 
 
-
-
-
-
-
 #-------------------------------------------คำนวณเกรด---------------------------------
 @app.route('/gradecal',methods=['POST','GET'])
 def gradecal():
@@ -144,6 +142,7 @@ def gradecal():
     # print(studentId)
 
     #--------- ถ้ามีค่าส่งมา เป็น post -------#
+    stu_id = '60020671'
     grade =[]
     unit=[]
     if request.method == 'POST':
@@ -153,8 +152,8 @@ def gradecal():
         # print("unit",unit)
         # print(type(unit))
         print("***********************************************************************")
-        print('หน่วยกิต:',unit)
-        print('เกรด:',grade)
+        print('หน่วยกิตที่รับค่ามา:',unit)
+        print('เกรดที่รับค่ามา:',grade)
         print("***********************************************************************")
          #---------------------เช็ค W------------------------------------
         for i in range(len(grade)): #วนลูปเช็คว่ามี W ไหม
@@ -169,8 +168,8 @@ def gradecal():
                 print(grade[i]) #เกรดที่นำมาคิด
             
         print("***********************************************************************")
-        print('หน่วยกิต:',unit)
-        print('เกรด:',grade)
+        print('หน่วยกิตที่:',unit)
+        print('เกรดที่:',grade)
         print("***********************************************************************")
 
         #------------------------------ start คำนวนเกรด gpax---------------------------------#
@@ -199,12 +198,12 @@ def gradecal():
             itemGPA = itemGPA+ x[i]
         print("itemGPA : เกรดเฉลี่ย",itemGPA)
         cur = mysql.connection.cursor()
-        cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '60020671'") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
+        cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '"+stu_id+"'") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
         subject=cur.fetchall()
         # print(subject)
         
         #------------------------------ start คำนวนเกรด gpax---------------------------------#
-        cur.execute("SELECT unit FROM student_grade WHERE student_id = '60020671' ")
+        cur.execute("SELECT unit FROM student_grade WHERE student_id = '"+stu_id+"' ")
         unit = cur.fetchall()
         sumUnit1 = 0 
         for indexUnit in range(0,len(unit)):
@@ -213,7 +212,7 @@ def gradecal():
             sumUnit1 = sumUnit1 + float(unitCal) 
         print("แสดงผลsumUnit1 ก่อน:",sumUnit1)
 
-        cur.execute("SELECT grade FROM student_grade WHERE student_id = '60020671' ")
+        cur.execute("SELECT grade FROM student_grade WHERE student_id = '"+stu_id+"' ")
         grade = cur.fetchall()
         #print(grade)
         sum1 = 0
@@ -284,8 +283,8 @@ def gradecal():
             # print("unit",unit)
             # print(type(unit))
             print("***********************************************************************")
-            print('หน่วยกิต:',unit)
-            print('เกรด:',grade)
+            print('หน่วยกิตที่ส่งมา:',unit)
+            print('เกรดที่ส่งมา:',grade)
             print("***********************************************************************")
 
             #---------------------เช็ค W------------------------------------
@@ -301,8 +300,8 @@ def gradecal():
                     print(grade[i]) #เกรดที่นำมาคิด
                 
         print("***********************************************************************")
-        print('หน่วยกิต:',unit)
-        print('เกรด:',grade)
+        print('หน่วยกิตที่เอามาคำนวณ:',unit)
+        print('เกรดที่เอามาคำนวณ:',grade)
         print("***********************************************************************")
 
         #------------------------------ start คำนวนเกรด gpax---------------------------------#
@@ -338,16 +337,16 @@ def gradecal():
             itemGPAXAll = itemGPAXAll+ x[i]
         print("itemGPAXAll : เกรดเฉลี่ย",itemGPAXAll) #เกรดที่ได้จากการคำนวณรต่อเทอม
         # ------ stop แสดงทศนิยม2ตำแหน่ง--------#
-        return render_template('gradecalShow.html',itemGPA=itemGPA,rows=rows,subject=subject,GPAX=itemGPAX,itemGPAXAll=itemGPAXAll)
+        return render_template('gradecalShow.html',itemGPA=itemGPA,rows=rows,subject=subject,GPAX=itemGPAX,itemGPAXAll=itemGPAXAll,stu_id=stu_id)
 
     else:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '60020671' ") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
+        cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '"+stu_id+"' ") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
         subject=cur.fetchall()
         # print(subject)
         
         #------------------------------ start คำนวนเกรด gpax---------------------------------#
-        cur.execute("SELECT unit FROM student_grade WHERE student_id = '60020671' ")
+        cur.execute("SELECT unit FROM student_grade WHERE student_id = '"+stu_id+"' ")
         unit = cur.fetchall()
         sumUnit = 0 
         for indexUnit in range(0,len(unit)):
@@ -356,7 +355,7 @@ def gradecal():
             sumUnit = sumUnit + float(unitCal) 
         # print(sumnUit)
 
-        cur.execute("SELECT grade FROM student_grade WHERE student_id = '60020671' ")
+        cur.execute("SELECT grade FROM student_grade WHERE student_id = '"+stu_id+"' ")
         grade = cur.fetchall()
         #print(grade)
         sum = 0
@@ -383,13 +382,13 @@ def gradecal():
         
         #--------- แผนการเรียนที่จะนำมาคำนวณเกรด-----------#
         cur = mysql.connection.cursor()
-        cur.execute("SELECT MAX(year) FROM student_grade WHERE student_id = '60020671' ")
+        cur.execute("SELECT MAX(year) FROM student_grade WHERE student_id = '"+stu_id+"' ")
         maxYear=cur.fetchall() # ค่าที่ printได้ >> ({'MAX(year)': '2'},)
         maxYear=(maxYear[0]['MAX(year)']) # ดึงค่าออกมาจาก tuple ค่าที่ printได้ >> 2  
         maxYear = str(maxYear)
         print('ปีล่าสุดที่เรียน',maxYear)
         cur = mysql.connection.cursor()
-        cur.execute("SELECT MAX(DISTINCT(term)) FROM student_grade WHERE student_id = '60020671' AND year = '"+maxYear+"' ")
+        cur.execute("SELECT MAX(DISTINCT(term)) FROM student_grade WHERE student_id = '"+stu_id+"' AND year = '"+maxYear+"' ")
         termMaxYear = cur.fetchall()
         # print("ยังไม่ได้ดึงค่าออกมา",termMaxYear)
         termMaxYear=(termMaxYear[0]['MAX(DISTINCT(term))']) # ดึงค่าออกมาจาก tuple ค่าที่ printได้ >> 2  
@@ -406,10 +405,10 @@ def gradecal():
             print("ปีต่อไปที่ต้องเรียน",maxYear,"เทอม",termMaxYear)
             #----- เลือกวิชาตามแผนการเรียนมาจาก database ----------
             cur = mysql.connection.cursor()
-            cur.execute("SELECT subject.subject_id,subject.subject_nameTh, subject.subject_nameEng, subject.unit ,study_plan.year ,study_plan.term FROM subject JOIN study_plan ON subject.subject_id = study_plan.subject_id WHERE study_plan.year ='"+maxYear+"' AND study_plan.term='"+termMaxYear+"' AND study_plan.plan_id='60' ")
+            cur.execute("SELECT subject.subject_id, subject.subject_nameTh, subject.subject_nameEng, subject.unit ,study_plan.year ,study_plan.term FROM subject JOIN study_plan ON subject.subject_id = study_plan.subject_id WHERE study_plan.year ='"+maxYear+"' AND study_plan.term='"+termMaxYear+"' AND study_plan.plan_id='60' ")
             subjectCal = cur.fetchall()
             print(subjectCal)
-            return render_template('gradecal.html',subject=subject,GPAX=itemGPAX,subjectCal=subjectCal)
+            return render_template('gradecal.html',subject=subject,GPAX=itemGPAX,subjectCal=subjectCal,stu_id=stu_id)
 
         #--------------------- กรณีเรีนถึงเทอม 1 ---------------------------------    
         elif termMaxYear == '2':
@@ -423,9 +422,52 @@ def gradecal():
             cur.execute("SELECT subject.subject_id,subject.subject_nameTh, subject.subject_nameEng, subject.unit ,study_plan.year ,study_plan.term FROM subject JOIN study_plan ON subject.subject_id = study_plan.subject_id WHERE study_plan.year ='"+maxYear+"' AND study_plan.term='"+termMaxYear+"' AND study_plan.plan_id='60' ")
             subjectCal = cur.fetchall()
             print(subjectCal)
-            return render_template('gradecal.html',subject=subject,GPAX=itemGPAX,subjectCal=subjectCal)
+            return render_template('gradecal.html',subject=subject,GPAX=itemGPAX,subjectCal=subjectCal,stu_id=stu_id)
     
 
+
+#-------------------- รับค่าเกรดที่คำนวณแล้วมาบันทึก -----------------------------------
+@app.route('/submitgradecal',methods=['POST','GET'])
+def submitgradecal():
+    if request.method == 'POST':
+        student_id = request.form.getlist('student_id[]')
+        subject_id = request.form.getlist('subject_id[]')
+        subject_nameTh = request.form.getlist('subject_nameTh[]')
+        subject_nameEng = request.form.getlist('subject_nameEng[]')
+        grade_cal = request.form.getlist('grade_cal[]')
+        unit = request.form.getlist('unit[]')
+        year = request.form.getlist('year[]')
+        term = request.form.getlist('term[]')
+        gpa = request.form['gpa']
+        gpax = request.form['gpax']
+        print('-------------------')
+        print(student_id,subject_id,subject_nameTh,subject_nameEng,grade_cal,unit,year,term)
+        print(type(student_id))
+        print('-------------------')
+        print(gpa,gpax)
+        
+        #บันทึกลงวิชาdatabase
+        # for index in range(len(student_id)):
+        #     # print(index)
+        #     cur = mysql.connection.cursor()
+        #     cur.execute (" INSERT INTO student_grade_cal (student_id,subject_id,grade_cal,term,year,unit) VALUES (%s,%s,%s,%s,%s,%s)",(student_id[index],subject_id[index],grade_cal[index],term[index],year[index],unit[index])) 
+        #     # print(cur.execute)
+        #     mysql.connection.commit()
+        
+        student_id = student_id[0]
+        
+        #ลบเกรดของนิสิตที่มีอยู่แล้วก่อน 
+        cur=mysql.connection.cursor()
+        cur.execute("DELETE FROM test WHERE student_id = '"+student_id+"'")
+        mysql.connection.commit()
+        
+        #เพิ่เกรดลงไปในdatabase
+        cur=mysql.connection.cursor()
+        cur.execute(" INSERT INTO test (student_id,gpa,gpax) VALUES (%s,%s,%s)",(student_id,gpa,gpax))
+        mysql.connection.commit()
+        
+
+    return render_template('test2.html')
 
 
 

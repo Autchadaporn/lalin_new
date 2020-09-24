@@ -54,17 +54,9 @@
                 <div style="background-color: antiquewhite;">
                 <form action="/gradecal" method="POST">
                     <h3>คำนวณเกรด</h3>
-                    ปีการศึกษา<select>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                            </select>
-                    ภาคเรียนที่<select>
-                                <option>1</option>
-                                <option>2</option>
-                            </select>
-                <div style="background-color: antiquewhite;">
+                <div style="background-color: antiquewhite; " id="commit">
+
+            <!-- ---------------- ------  วิชา เกรด เทอมถัดไปที่จะเอามาคำนวณ  ----------  ------------------------->
                 <table class="table table-bordered">
                     <tr>
                         <th style="width: 10em; text-align: center;">รหัสนิสิต</th>
@@ -79,16 +71,16 @@
                     <tr>
                         {% for row in subjectCal  %}
                     <tr>        
-                        <td><input name="student_id[]" type="text" class="tdInput" value="{{row.student_id}}"size="6" readonly></td>
+                        <td><input name="student_id[]" type="text" class="tdInput" value="{{stu_id}}"size="6" readonly></td>
                         <td><input name="subject_id[]" type="text" class="tdInput" value="{{row.subject_id}}" size="6" readonly></td>
                         <td><input name="subject_nameTh[]" type="text" class="tdInput" value="{{row.subject_nameTh}}" size="6" readonly></td>
                         <td><input name="subject_nameEng[]" type="text" class="tdInput" value="{{row.subject_nameEng}}"size="6" readonly></td>
                         <!-- เช็ควิชาว่าเป็นวิชา -->
                             {% if row.subject_id == '225491' or row.subject_id =='225492' or row.subject_id =='225493' or row.subject_id =='225494' or row.subject_id =='225495' %}
                             <td><select name="grade[]" style="width: 3em;">
+                                <option value="S">S</option>
                                 <option value="I">I</optio>
                                 <option value="P">P</option>
-                                <option value="S">S</option>
                                 <option value="U">U</option>
                                 <option value="W">W(ไม่คำนวณเกรด)</option>
                                 </select></td>
@@ -117,6 +109,7 @@
                 เกรดเฉี่ลยต่อเทอม<input type="text" value="{{itemGPA}}" style="background-color: white; width: 4em; text-align: center;" readonly>
                 เกรดเฉลี่ยรวม<input type="text" value="{{itemGPAX}}" style="background-color: white; width: 4em; text-align: center;" readonly>
                 <input type="submit" value="คำนวณ" style="background-color: whitesmoke;">
+        <!-- ---------------- ------  วิชา เกรดที่มีอยู่แล้วใน database   ----------  ------------------------->
                 <table class="table table-bordered" style="margin-top: 2em;">
                     <tr>
                         <th style="width: 10em; text-align: center;">รหัสนิสิต</th>
@@ -144,6 +137,7 @@
                 <p><input type="text" value="{{GPAX}}"  style="background-color: white; width: 4em; text-align: center;"  readonly></p>
                 </div>
                  </form>
+
             </div>
         </div>
     </div>
