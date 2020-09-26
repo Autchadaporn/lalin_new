@@ -8,6 +8,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ url_for ('static', filename='css/styleCalen.css') }}" >
+    <link rel="stylesheet" href="{{ url_for ('static', filename='css/stylecalendar.css') }}" >
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href='fullcalendar-scheduler/main.css' rel='stylesheet' />
+    <script src='fullcalendar-scheduler/main.js'></script>
     <title>ปฎิทินการศึกษา</title>
 </head>
 <style>
@@ -17,90 +28,33 @@
     <div class="navbar navbar-inverse navbar-static-top">
         <div class="container">
             <a href=" " class="navbar-brand">LALIN</a>
-            <!--<button class="navbar-toggle" data-toggle="collapse" data-target=".navHeader">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <div class="collapse navbar-collapse navHeader">
-                <ul class="nav navbar-nav navbar-center">
-                    <li><a href="/calendar">ปฎิทินการศึกษา</a></li>
-                    <li><a href="/showstudyplan">แผนการเรียน</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">เกรด</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/gradeall">ผลการเรียน</a></li>
-                            <li><a href="/gradecal">คำนวณเกรด</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div> -->
         </div>
     </div>
 
     
-    <div class="container" >
+    <div class="container" style="margin-top: 72px;">
         <div align="center" class="padding">
-
-        
-            <div class="month">      
-            <ul>
-                <li class="prev">&#10094;</li>
-                <li class="next">&#10095;</li>
-                <li>
-                กันยายน/Septem<br>
-                <span style="font-size:15px">2563/2020</span>
-                </li>
-            </ul>
-            </div>
-
-            <ul class="weekdays">
-                <li>Mo</li>
-                <li>Tu</li>
-                <li>We</li>
-                <li>Th</li>
-                <li>Fr</li>
-                <li>Sa</li>
-                <li>Su</li>
-            </ul>
-
-            <ul class="days">  
-                <li> </li>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-                <li>5</li>
-                <li>6</li>
-                <li>7</li>
-                <li>8</li>
-                <li>9</li>
-                <li>10</li>
-                <li>11</li>
-                <li>12</li>
-                <li>13</li>
-                <li><span class="active">14</span></li>
-                <li>15</li>
-                <li>16</li>
-                <li>17</li>
-                <li>18</li>
-                <li>19</li>
-                <li>20</li>
-                <li>21</li>
-                <li>22</li>
-                <li>23</li>
-                <li>24</li>
-                <li>25</li>
-                <li>26</li>
-                <li>27</li>
-                <li>28</li>
-                <li>29</li>
-                <li>30</li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
+            
+            <div class="calendar">
+                <div class="month">
+                  <i class="fas fa-angle-left prev"></i>
+                  <div class="date">
+                    <h1></h1>
+                    <p></p>
+                  </div>
+                  <i class="fas fa-angle-right next"></i>
+                </div>
+                <div class="weekdays">
+                  <div>Sun</div>
+                  <div>Mon</div>
+                  <div>Tue</div>
+                  <div>Wed</div>
+                  <div>Thu</div>
+                  <div>Fri</div>
+                  <div>Sat</div>
+                </div>
+                <div class="days"></div>
+              </div>
 
             <p>ปฎิทินการศึกษาปีการศึกษา</p>
                 <table class="table table-dark">
@@ -116,7 +70,11 @@
                         <td>{{row.topic_name}}</td>
                         <td>{{row.term}}</td>
                         <td>{{row.date_start}}</td>
-                        <td>{{row.date_stop}}</td>
+                        {% if row.data_stop == None or row.data_stop == '' %}
+                            <td> </td>
+                        {% else %}
+                            <td>{{row.date_stop}}</td>
+                        {% endif %}
                         <td>{{row.year}}</td>
                     </tr>
                     {% endfor%}
@@ -136,3 +94,4 @@
     });
 </script>
 </html>
+<script src="static/js/script.js"></script>

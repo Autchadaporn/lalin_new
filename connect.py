@@ -87,6 +87,9 @@ def gradeall():
         studentId=cur.fetchall()
         studentId=(studentId[0]['member_id'])
         print(studentId)
+    
+    
+        studentId = '60023179' #<< ลองใส่เกรดดูค่า ทำ css 
         cur = mysql.connection.cursor()
         cur.execute("SELECT student_grade.student_id , subject.subject_id , subject.subject_nameTh , subject.subject_nameEng ,student_grade.grade , student_grade.unit , student_grade.year, student_grade.term  FROM student_grade JOIN subject ON subject.subject_id = student_grade.subject_id WHERE student_id = '"+studentId+"' ") # ex. ดูว่ารหัสนิสิต 60023179 เรียนอะไรไปแล้วบ้าง
         data1=cur.fetchall()
@@ -718,6 +721,24 @@ def  calendar():
     cur = mysql.connection.cursor()
     cur.execute("SELECT topic.topic_name, calendar.term ,calendar.date_start, calendar.date_stop,calendar.year FROM topic INNER JOIN calendar ON topic.topic_id = calendar.topic_id ORDER BY calendar.term")
     data = cur.fetchall()
+    # print(data)
+    # print(type(data))
+    
+    for i in range(len(data)):
+        if data[i]['date_start'] == None :
+            data[i]['date_start'] = "-"
+            
+        else:
+            data[i]['date_start']
+
+    for i in range(len(data)):
+        if data[i]['date_stop'] == None :
+            data[i]['date_stop'] = "-"
+            
+        else:
+            data[i]['date_stop']
+    # print(data)
+
     return render_template('calendar.html',data=data)
     
 
